@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="update-IntraDay-write" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/file/ARIS-KPEI-PROJECT/OR01-ARMSMember/update_IntraDay_write" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/file/ARIS-KPEI-PROJECT/OR01-ARMSMember/update_IntraDay_write" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:imp1="http://www.kpei.co.id/razor/Member_Intraday" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/">
+   <plt:partnerLinkType name="Write_intraday_plt">
+      <plt:role name="Write-intraday_role">
+         <plt:portType name="tns:Write_intraday_ptt"/>
+      </plt:role>
+   </plt:partnerLinkType>
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://www.kpei.co.id/razor/Member_Intraday" schemaLocation="xsd/Member_Intraday.xsd"/>
+      </schema>
+   </wsdl:types>
+   <wsdl:message name="Write-intraday_msg">
+      <wsdl:part name="body" element="imp1:kpeiInbound"/>
+   </wsdl:message>
+   <wsdl:portType name="Write_intraday_ptt">
+      <wsdl:operation name="Write-intraday">
+         <wsdl:input message="tns:Write-intraday_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

@@ -1,0 +1,101 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Wed Aug 03 14:57:34 ICT 2011
+  Author:  DeddyNu
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="CallMemberToARMSBPEL"
+               targetNamespace="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/CallMemberToARMSBPEL"
+               xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+               xmlns:client="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/CallMemberToARMSBPEL"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/MemberToARMS_JMS"
+               xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:ns2="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL"
+         xmlns:ns3="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/MemberResponseQueueJMS">
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  --> 
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="callmembertoarmsbpel_client" partnerLinkType="ns1:ConsumeMessageMemberQueue_plt" myRole="ConsumeMessageMemberQueue_role"/>
+    <partnerLink name="MemberToARMSBPEL.membertoarmsbpel_client"
+                 partnerRole="MemberToARMSBPELProvider"
+                 partnerLinkType="ns2:MemberToARMSBPEL"/>
+    <partnerLink name="MemberResponseQueueJMS"
+                 partnerRole="Produce_Message_role"
+                 partnerLinkType="ns3:Produce_Message_plt"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="ns1:ConsumeMessageMemberQueue_msg"/>
+    <variable name="invokeMemberToARMSBPEL_process_InputVariable"
+              messageType="ns2:MemberToARMSBPELRequestMessage"/>
+    <variable name="invokeMemberToARMSBPEL_process_OutputVariable"
+              messageType="ns2:MemberToARMSBPELResponseMessage"/>
+    <variable name="invokeMemberResponseJMS_Produce_Message_InputVariable"
+              messageType="ns3:Produce_Message_msg"/>
+  </variables>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in CallMemberToARMSBPEL.wsdl) -->
+    <receive name="receiveInput" partnerLink="callmembertoarmsbpel_client" portType="ns1:ConsumeMessageMemberQueue_ptt" operation="ConsumeMessageMemberQueue" variable="inputVariable" createInstance="yes"/>
+    <assign name="transformMemberToARMS">
+      <bpelx:annotation>
+        <bpelx:pattern>transformation</bpelx:pattern>
+      </bpelx:annotation>
+      <copy>
+        <from expression="ora:processXSLT('xsl/transformMemberToARMS.xsl',bpws:getVariableData('inputVariable','body'))"/>
+        <to variable="invokeMemberToARMSBPEL_process_InputVariable"
+            part="payload"/>
+      </copy>
+    </assign>
+    <invoke name="invokeMemberToARMSBPEL"
+            inputVariable="invokeMemberToARMSBPEL_process_InputVariable"
+            outputVariable="invokeMemberToARMSBPEL_process_OutputVariable"
+            partnerLink="MemberToARMSBPEL.membertoarmsbpel_client"
+            portType="ns2:MemberToARMSBPEL" operation="process"/>
+    <assign name="transformToJMS">
+      <bpelx:annotation>
+        <bpelx:pattern>transformation</bpelx:pattern>
+      </bpelx:annotation>
+      <copy>
+        <from expression="ora:processXSLT('xsl/transformToJMS.xsl',bpws:getVariableData('invokeMemberToARMSBPEL_process_OutputVariable','payload'))"/>
+        <to variable="invokeMemberResponseJMS_Produce_Message_InputVariable"
+            part="body"/>
+      </copy>
+    </assign>
+    <invoke name="invokeMemberResponseJMS"
+            inputVariable="invokeMemberResponseJMS_Produce_Message_InputVariable"
+            partnerLink="MemberResponseQueueJMS"
+            portType="ns3:Produce_Message_ptt" operation="Produce_Message"/>
+  </sequence>
+</process>

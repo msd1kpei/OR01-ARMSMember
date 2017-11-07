@@ -1,0 +1,176 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<composite name="OR01-ARMSMember" revision="2.01" label="2010-03-22_13-58-58_299" mode="active" state="on" xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:orawsp="http://schemas.oracle.com/ws/2006/01/policy" xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+   <import namespace="http://oracle.com/sca/soapservice/ARIS-KPEI-PROJECT/OR01-ARMSMember/OR01_ARMSMember" location="OR01_ARMSMember.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberDeleteBPEL" location="MemberDeleteBPEL.wsdl" importType="wsdl"/>
+   <import namespace="http://oracle.com/sca/soapservice/KPEI-MIDDLEWARE/Ge01-messageMonitor/messageMonitorService" location="http://SERVICESERVER:7777/soa-infra/services/default/GE01-MessageMonitor/messageMonitorService.wsdl" importType="wsdl"/>
+   <import namespace="http://www.kpei.co.id/GE02-FileUtility" location="http://SERVICESERVER:7777/kpei/GE02-FileUtility?wsdl" importType="wsdl"/>
+   <import namespace="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility" location="http://SERVICESERVER:7777/soa-infra/services/default/GE03-XMLUtility/GE03-XMLUtility.wsdl" importType="wsdl"/>
+   <import namespace="http://oracle.com/sca/soapservice/KPEI-MIDDLEWARE/Ge01-messageMonitor/messageMonitorService" location="messageMonitorServiceRef.wsdl" importType="wsdl"/>
+   <import namespace="http://www.kpei.co.id/GE02-FileUtility" location="GE02-FileUtility.wsdl" importType="wsdl"/>
+   <import namespace="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility" location="GE03-XMLUtilityRef.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/file/ARIS-KPEI-PROJECT/OR01-ARMSMember/writeLocal" location="writeLocal.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberUpdateBPEL" location="MemberUpdateBPEL.wsdl" importType="wsdl"/>
+   <import namespace="http://oracle.com/sca/soapservice/KPEI-MIDDLEWARE/Ge01-messageMonitor/messageMonitorService" location="messageMonitorServiceRef1.wsdl" importType="wsdl"/>
+   <import namespace="http://www.kpei.co.id/GE02-FileUtility" location="GE02-FileUtility1.wsdl" importType="wsdl"/>
+   <import namespace="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility" location="GE03-XMLUtilityRef1.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/file/ARIS-KPEI-PROJECT/OR01-ARMSMember/update_EOD_writeLocal" location="update_EOD_writeLocal.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/file/ARIS-KPEI-PROJECT/OR01-ARMSMember/update_IntraDay_write" location="update_IntraDay_write.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL" location="MemberToARMSBPEL.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/MemberToARMS_JMS" location="MemberToARMS_JMS.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/MemberResponseQueue_JMS" location="MemberResponseQueue_JMS.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/ARIS-KPEI-PROJECT/OR01-ARMSMember/ARMSMemberDB" location="ARMSMemberDB.wsdl" importType="wsdl"/>
+   <import namespace="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/MemberUpdate" location="MemberUpdate.wsdl" importType="wsdl"/>
+   <service name="OR01-ARMSMember" ui:wsdlLocation="OR01_ARMSMember.wsdl">
+      <interface.wsdl interface="http://oracle.com/sca/soapservice/ARIS-KPEI-PROJECT/OR01-ARMSMember/OR01_ARMSMember#wsdl.interface(execute_ptt)"/>
+      <binding.ws port="http://oracle.com/sca/soapservice/ARIS-KPEI-PROJECT/OR01-ARMSMember/OR01_ARMSMember#wsdl.endpoint(OR01-ARMSMember/execute_pt)"/>
+   </service>
+   <service name="MemberToARMS-JMS" ui:wsdlLocation="MemberToARMS_JMS.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/MemberToARMS_JMS#wsdl.interface(ConsumeMessageMemberQueue_ptt)"/>
+      <binding.jca config="MemberToARMS-JMS_jms.jca"/>
+   </service>
+   <property name="validateSchema" type="xs:boolean" many="false">false</property>
+   <component name="ARMSMemberMediator">
+      <implementation.mediator src="ARMSMemberMediator.mplan"/>
+   </component>
+   <component name="MemberDeleteBPEL">
+      <implementation.bpel src="MemberDeleteBPEL.bpel"/>
+      <property name="configuration.sensorLocation" type="xs:string" many="false">MemberDeleteBPEL_sensor.xml</property>
+      <property name="configuration.sensorActionLocation" type="xs:string" many="false">MemberDeleteBPEL_sensorAction.xml</property>
+      <property name="configuration.monitorLocation" type="xs:string"
+                many="false">MemberDeleteBPEL.monitor</property>
+   </component>
+   <component name="MemberUpdateBPEL">
+      <implementation.bpel src="MemberUpdateBPEL.bpel"/>
+      <property name="configuration.sensorLocation" type="xs:string" many="false">MemberUpdateBPEL_sensor.xml</property>
+      <property name="configuration.sensorActionLocation" type="xs:string" many="false">MemberUpdateBPEL_sensorAction.xml</property>
+      <property name="configuration.monitorLocation" type="xs:string"
+                many="false">MemberUpdateBPEL.monitor</property>
+   </component>
+   <component name="MemberToARMSBPEL">
+      <implementation.bpel src="MemberToARMSBPEL.bpel"/>
+      <property name="configuration.sensorLocation" type="xs:string" many="false">MemberToARMSBPEL_sensor.xml</property>
+      <property name="configuration.monitorLocation" type="xs:string"
+                many="false">MemberToARMSBPEL.monitor</property>
+      <property name="configuration.sensorActionLocation" type="xs:string"
+                many="false">MemberToARMSBPEL_sensorAction.xml</property>
+   </component>
+   <component name="MemberToARMSMediator">
+      <implementation.mediator src="MemberToARMSMediator.mplan"/>
+   </component>
+   <reference name="GE01-MessageMonitor" ui:wsdlLocation="http://SERVICESERVER:7777/soa-infra/services/default/GE01-MessageMonitor/messageMonitorService.wsdl">
+      <interface.wsdl interface="http://oracle.com/sca/soapservice/KPEI-MIDDLEWARE/Ge01-messageMonitor/messageMonitorService#wsdl.interface(messageMonitor)"/>
+      <binding.ws port="http://oracle.com/sca/soapservice/KPEI-MIDDLEWARE/Ge01-messageMonitor/messageMonitorService#wsdl.endpoint(GE01-MessageMonitor/messageMonitor_pt)" location="http://SERVICESERVER:7777/soa-infra/services/default/GE01-MessageMonitor/GE01-MessageMonitor?WSDL"/>
+   </reference>
+   <reference name="GE02-FileUtility" ui:wsdlLocation="http://SERVICESERVER:7777/kpei/GE02-FileUtility?wsdl">
+      <interface.wsdl interface="http://www.kpei.co.id/GE02-FileUtility#wsdl.interface(GE02-FileUtility)"/>
+      <binding.ws port="http://www.kpei.co.id/GE02-FileUtility#wsdl.endpoint(GE02-FileUtility/GE02-FileUtility)" location="http://SERVICESERVER:7777/kpei/GE02-FileUtility?wsdl"/>
+   </reference>
+   <reference name="GE03-XMLUtility" ui:wsdlLocation="http://SERVICESERVER:7777/soa-infra/services/default/GE03-XMLUtility/GE03-XMLUtility.wsdl">
+      <interface.wsdl interface="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility#wsdl.interface(GE03-XMLUtility)"/>
+      <binding.ws port="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility#wsdl.endpoint(GE03-XMLUtility/GE03-XMLUtility_pt)" location="http://SERVICESERVER:7777/soa-infra/services/default/GE03-XMLUtility/GE03-XMLUtility?WSDL"/>
+   </reference>
+   <reference name="writeLocal" ui:wsdlLocation="writeLocal.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/file/ARIS-KPEI-PROJECT/OR01-ARMSMember/writeLocal#wsdl.interface(Write_local_ptt)"/>
+      <binding.jca config="writeLocal_file.jca"/>
+   </reference>
+   <reference name="update-EOD-writeLocal" ui:wsdlLocation="update_EOD_writeLocal.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/file/ARIS-KPEI-PROJECT/OR01-ARMSMember/update_EOD_writeLocal#wsdl.interface(Write_updateEOD_ptt)"/>
+      <binding.jca config="update-EOD-writeLocal_file.jca"/>
+   </reference>
+   <reference name="update-IntraDay-write" ui:wsdlLocation="update_IntraDay_write.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/file/ARIS-KPEI-PROJECT/OR01-ARMSMember/update_IntraDay_write#wsdl.interface(Write_intraday_ptt)"/>
+      <binding.jca config="update-IntraDay-write_file.jca"/>
+   </reference>
+   <reference name="MemberResponseQueue-JMS" ui:wsdlLocation="MemberResponseQueue_JMS.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/MemberResponseQueue_JMS#wsdl.interface(ProduceMessageMemberResponseQueue_ptt)"/>
+      <binding.jca config="MemberResponseQueue-JMS_jms.jca"/>
+   </reference>
+   <reference name="ARMSMemberDB" ui:wsdlLocation="ARMSMemberDB.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/ARIS-KPEI-PROJECT/OR01-ARMSMember/ARMSMemberDB#wsdl.interface(ARMSMemberDB_ptt)"/>
+      <binding.jca config="ARMSMemberDB_db.jca"/>
+      <property name="jca.retry.count" type="xs:int" many="false" override="may">4</property>
+      <property name="jca.retry.interval" type="xs:int" many="false" override="may">1</property>
+      <property name="jca.retry.backoff" type="xs:int" many="false" override="may">2</property>
+      <property name="jca.retry.maxInterval" type="xs:string" many="false" override="may">120</property>
+   </reference>
+   <reference name="MemberUpdate" ui:wsdlLocation="MemberUpdate.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/MemberUpdate#wsdl.interface(Produce_Message_ptt)"/>
+      <binding.jca config="MemberUpdate_jms.jca"/>
+   </reference>
+   <wire>
+      <source.uri>OR01-ARMSMember</source.uri>
+      <target.uri>ARMSMemberMediator/ARMSMemberMediator</target.uri>
+   </wire>
+   <wire>
+      <source.uri>ARMSMemberMediator/MemberDeleteBPEL.memberdeletebpel_client</source.uri>
+      <target.uri>MemberDeleteBPEL/memberdeletebpel_client</target.uri>
+   </wire>
+   <wire>
+      <source.uri>MemberDeleteBPEL/GE01-MessageMonitor</source.uri>
+      <target.uri>GE01-MessageMonitor</target.uri>
+   </wire>
+   <wire>
+      <source.uri>MemberDeleteBPEL/GE02-FileUtility</source.uri>
+      <target.uri>GE02-FileUtility</target.uri>
+   </wire>
+   <wire>
+      <source.uri>MemberDeleteBPEL/GE03-XMLUtility</source.uri>
+      <target.uri>GE03-XMLUtility</target.uri>
+   </wire>
+   <wire>
+      <source.uri>MemberDeleteBPEL/writeLocal</source.uri>
+      <target.uri>writeLocal</target.uri>
+   </wire>
+   <wire>
+      <source.uri>ARMSMemberMediator/MemberUpdateBPEL.memberupdatebpel_client</source.uri>
+      <target.uri>MemberUpdateBPEL/memberupdatebpel_client</target.uri>
+   </wire>
+   <wire>
+      <source.uri>MemberUpdateBPEL/GE01-MessageMonitor</source.uri>
+      <target.uri>GE01-MessageMonitor</target.uri>
+   </wire>
+   <wire>
+      <source.uri>MemberUpdateBPEL/GE02-FileUtility</source.uri>
+      <target.uri>GE02-FileUtility</target.uri>
+   </wire>
+   <wire>
+      <source.uri>MemberUpdateBPEL/GE03-XMLUtility</source.uri>
+      <target.uri>GE03-XMLUtility</target.uri>
+   </wire>
+   <wire>
+      <source.uri>MemberUpdateBPEL/update-EOD-writeLocal</source.uri>
+      <target.uri>update-EOD-writeLocal</target.uri>
+   </wire>
+   <wire>
+      <source.uri>MemberUpdateBPEL/update-IntraDay-write</source.uri>
+      <target.uri>update-IntraDay-write</target.uri>
+   </wire>
+   <wire>
+      <source.uri>MemberToARMS-JMS</source.uri>
+      <target.uri>MemberToARMSMediator/MemberToARMSMediator</target.uri>
+   </wire>
+   <wire>
+      <source.uri>MemberToARMSMediator/MemberToARMSBPEL.membertoarmsbpel_client</source.uri>
+      <target.uri>MemberToARMSBPEL/membertoarmsbpel_client</target.uri>
+   </wire>
+   <wire>
+      <source.uri>ARMSMemberMediator/MemberToARMSBPEL.membertoarmsbpel_client</source.uri>
+      <target.uri>MemberToARMSBPEL/membertoarmsbpel_client</target.uri>
+   </wire>
+   <wire>
+      <source.uri>MemberToARMSMediator/MemberResponseQueue-JMS</source.uri>
+      <target.uri>MemberResponseQueue-JMS</target.uri>
+   </wire>
+   <wire>
+      <source.uri>MemberToARMSBPEL/ARMSMemberDB</source.uri>
+      <target.uri>ARMSMemberDB</target.uri>
+   </wire>
+   <wire>
+      <source.uri>MemberUpdateBPEL/MemberUpdate</source.uri>
+      <target.uri>MemberUpdate</target.uri>
+   </wire>
+   <wire>
+      <source.uri>MemberDeleteBPEL/MemberUpdate</source.uri>
+      <target.uri>MemberUpdate</target.uri>
+   </wire>
+</composite>

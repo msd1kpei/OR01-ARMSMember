@@ -1,0 +1,193 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema xmlns="http://www.kpei.co.id/middleware" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ns1="http://www.kpei.co.id/DataFeedNettedTradeRequest" xmlns:ns2="http://www.kpei.co.id/ARMSOfflineCollateralRequest" xmlns:ns3="http://www.kpei.co.id/RMOLNetPositionRequest" targetNamespace="http://www.kpei.co.id/middleware" elementFormDefault="qualified" attributeFormDefault="unqualified">
+   <xs:element name="MemberDelete">
+      <xs:annotation>
+         <xs:documentation>ARMS Member delete inbound</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="header" type="middlewareHeader"/>
+            <xs:element name="body">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element name="idMember" type="xs:string" maxOccurs="unbounded"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="MemberUpdate">
+      <xs:annotation>
+         <xs:documentation>ARMS Member EOD, updates and inserts inbound</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="header" type="middlewareHeader"/>
+            <xs:element name="type" type="xs:string">
+               <xs:annotation>
+                  <xs:documentation>EOD/ INTRA</xs:documentation>
+               </xs:annotation>
+            </xs:element>
+            <xs:element name="body">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element name="riskPointDomain">
+                        <xs:complexType>
+                           <xs:sequence>
+                              <xs:element name="record" maxOccurs="unbounded">
+                                 <xs:complexType>
+                                    <xs:sequence>
+                                       <xs:element name="parents" minOccurs="0">
+                                          <xs:complexType>
+                                             <xs:sequence>
+                                                <xs:element name="parent" minOccurs="1">
+                                                   <xs:complexType>
+                                                      <xs:attribute name="id" type="xs:string">
+                                                         <xs:annotation>
+                                                            <xs:documentation>ID Parent</xs:documentation>
+                                                         </xs:annotation>
+                                                      </xs:attribute>
+                                                   </xs:complexType>
+                                                </xs:element>
+                                             </xs:sequence>
+                                          </xs:complexType>
+                                       </xs:element>
+                                       <xs:element name="fields">
+                                          <xs:complexType>
+                                             <xs:sequence>
+                                                <xs:element name="field" minOccurs="3" maxOccurs="4">
+                                                   <xs:annotation>
+                                                      <xs:documentation>Value of column; DESCRIPTION = Member Long Name, MEMBER TYPE = Member Type - Must be the string representation, OPERATING STATUS = Member Operating Status - Must be the string representation, SUSPENSION TYPE = {If the member’s status field is set to either “Closed” or “Active” then the value of the suspension type is to be set to Nothing (field should be explicitly null).
+If the member’s status field is set to either “Restricted” or “Suspended” then the value of the suspension type is NOT to be set (explicitly omit this field from the delta update). }</xs:documentation>
+                                                   </xs:annotation>
+                                                   <xs:complexType>
+                                                      <xs:simpleContent>
+                                                         <xs:extension base="xs:string">
+                                                            <xs:attribute name="id" type="xs:string">
+                                                               <xs:annotation>
+                                                                  <xs:documentation>Name of Column; By default, it should be DESCRIPTION, MEMBER TYPE, OPERATING STATUS, SUSPENSION TYPE</xs:documentation>
+                                                               </xs:annotation>
+                                                            </xs:attribute>
+                                                         </xs:extension>
+                                                      </xs:simpleContent>
+                                                   </xs:complexType>
+                                                </xs:element>
+                                             </xs:sequence>
+                                          </xs:complexType>
+                                       </xs:element>
+                                    </xs:sequence>
+                                    <xs:attribute name="id" type="xs:string">
+                                       <xs:annotation>
+                                          <xs:documentation>ID member</xs:documentation>
+                                       </xs:annotation>
+                                    </xs:attribute>
+                                 </xs:complexType>
+                              </xs:element>
+                           </xs:sequence>
+                        </xs:complexType>
+                     </xs:element>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+            <xs:element name="ext" type="expandableVariable"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:element name="MemberToARMS">
+      <xs:annotation>
+         <xs:documentation>e-CLEARS member to ARMS</xs:documentation>
+      </xs:annotation>
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="header" type="middlewareHeader"/>
+            <xs:element name="body">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element ref="e-CLEARSMember" maxOccurs="unbounded"/>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+            <xs:element name="ext" type="expandableVariable"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+   <xs:complexType name="expandableVariable">
+      <xs:annotation>
+         <xs:documentation>Array of variable for extending parameters</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="value" minOccurs="0" maxOccurs="unbounded">
+            <xs:annotation>
+               <xs:documentation>value of parameter</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+               <xs:simpleContent>
+                  <xs:extension base="xs:string">
+                     <xs:attribute name="id" type="xs:string">
+                        <xs:annotation>
+                           <xs:documentation>name of parameter</xs:documentation>
+                        </xs:annotation>
+                     </xs:attribute>
+                  </xs:extension>
+               </xs:simpleContent>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="middlewareHeader">
+      <xs:annotation>
+         <xs:documentation>Standard Middleware Header</xs:documentation>
+      </xs:annotation>
+      <xs:sequence>
+         <xs:element name="asAt" type="xs:dateTime">
+            <xs:annotation>
+               <xs:documentation>timestamp; ex. 2010-01-01T01:01:01 </xs:documentation>
+            </xs:annotation>
+         </xs:element>
+         <xs:element name="source" type="xs:string">
+            <xs:annotation>
+               <xs:documentation>source system; ex. Datafeed</xs:documentation>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+      <xs:attribute name="id" type="xs:string">
+         <xs:annotation>
+            <xs:documentation>id for distinguish between message; can be sequence or filename_yyyymmddh24miss</xs:documentation>
+         </xs:annotation>
+      </xs:attribute>
+   </xs:complexType>
+   <xs:element name="e-CLEARSMember">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="CON_PERS_1" type="xs:string"/>
+            <xs:element name="CON_PERS_2" type="xs:string"/>
+            <xs:element name="CODE_ZIP" type="xs:string"/>
+            <xs:element name="CODE_COU" type="xs:integer" nillable="true"/>
+            <xs:element name="CODE_MEM_CAT" type="xs:integer" nillable="true"/>
+            <xs:element name="CODE_MRKT_RATE" type="xs:integer" nillable="true"/>
+            <xs:element name="CODE_MEM_STA" type="xs:integer" nillable="true"/>
+            <xs:element name="CITY_DSC" type="xs:string"/>
+            <xs:element name="DSC_MEM" type="xs:string"/>
+            <xs:element name="DSC_MEM_SHORT" type="xs:string"/>
+            <xs:element name="EXT_REF" type="xs:string"/>
+            <xs:element name="ID_MEM" type="xs:string"/>
+            <xs:element name="ID_MEM_CAPCO" type="xs:string"/>
+            <xs:element name="ID_MEM_INTE" type="xs:string"/>
+            <xs:element name="LST_UPD_TS" type="xs:string"/>
+            <xs:element name="MEM_ADR_1" type="xs:string"/>
+            <xs:element name="MEM_ADR_2" type="xs:string"/>
+            <xs:element name="TYP_MEM" type="xs:integer" nillable="true"/>
+            <xs:element name="MEM_CLE_ID_MEM_CAPCO" type="xs:string"/>
+            <xs:element name="TAX_NUM" type="xs:string"/>
+            <xs:element name="FAX_NBR" type="xs:string"/>
+            <xs:element name="PHONE_NBR" type="xs:string"/>
+            <xs:element name="WEB_NM" type="xs:string"/>
+            <xs:element name="EMAIL_ADR" type="xs:string"/>
+            <xs:element name="CODE_BR" type="xs:string" nillable="true"/>
+            <xs:element name="parentID" type="xs:string"/>
+            <xs:element name="upliftFactor" type="xs:decimal" nillable="true"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>
+</xs:schema>

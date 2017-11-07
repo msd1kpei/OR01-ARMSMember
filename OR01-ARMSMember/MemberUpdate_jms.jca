@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<adapter-config name="MemberUpdate" adapter="Jms Adapter" wsdlLocation="MemberUpdate.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+   <connection-factory location="eis/jms/skd/MemberUpdate" UIConnectionName="albacoredev" UIJmsProvider="WLSJMS" adapterRef=""/>
+   <endpoint-interaction portType="Produce_Message_ptt" operation="Produce_Message">
+      <interaction-spec className="oracle.tip.adapter.jms.outbound.JmsProduceInteractionSpec">
+         <property name="DestinationName" value="jms/skd/MemberUpdateQueue"/>
+         <property name="DeliveryMode" value="Persistent"/>
+         <property name="TimeToLive" value="0"/>
+         <property name="PayloadType" value="TextMessage"/>
+      </interaction-spec>
+   </endpoint-interaction>
+</adapter-config>

@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="ARMS-Member" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/ARIS-KPEI-PROJECT/OR01-ARMSMember/ARMS_Member" xmlns:db="http://xmlns.oracle.com/pcbpel/adapter/db/ARMS-Member" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/db/ARIS-KPEI-PROJECT/OR01-ARMSMember/ARMS_Member" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/">
+   <plt:partnerLinkType name="ARMS_Member_plt">
+      <plt:role name="ARMS-Member_role">
+         <plt:portType name="tns:ARMS_Member_ptt"/>
+      </plt:role>
+   </plt:partnerLinkType>
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/ARMS-Member" schemaLocation="xsd/ARMS_Member.xsd"/>
+      </schema>
+   </wsdl:types>
+   <wsdl:message name="ARMS-MemberInput_msg">
+      <wsdl:part name="ARMS-MemberInput_msg" element="db:ARMS-MemberInput"/>
+   </wsdl:message>
+   <wsdl:portType name="ARMS_Member_ptt">
+      <wsdl:operation name="ARMS-Member">
+         <wsdl:input message="tns:ARMS-MemberInput_msg"/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

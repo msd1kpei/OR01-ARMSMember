@@ -1,0 +1,11 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<adapter-config name="ARMS-Member" adapter="Database Adapter" wsdlLocation="ARMS_Member.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+   <connection-factory location="eis/DB/ds_arms" UIConnectionName="Connection1" adapterRef=""/>
+   <endpoint-interaction portType="ARMS_Member_ptt" operation="ARMS-Member">
+      <interaction-spec className="oracle.tip.adapter.db.DBPureSQLInteractionSpec">
+         <property name="SqlString" value="insert into dbo.member (CON_PERS_1, CON_PERS_2, CODE_ZIP, CODE_COU, CODE_MEM_CAT, CODE_MRKT_RATE, CODE_MEM_STA, CITY_DSC, DSC_MEM, DSC_MEM_SHORT, EXT_REF, ID_MEM, ID_MEM_CAPCO, ID_MEM_INTE, LST_UPD_TS, MEM_ADR_1, MEM_ADR_2, TYPE_MEM, MEM_CLE_ID_MEM_CAPCO, TAX_NUM, FAX_NBR, PHONE_NBR,WEB_NM, EMAIL_ADR, CODE_BR, PARENT_ID, UPLIFT_FACTOR, INSERT_DATE, INSERT_USER) values ( #con_pers_1, #con_pers_2, #code_zip, #code_cou, #code_mem_cat, #code_mrkt_rate, #code_mem_sta, #city_dsc, #dsc_mem, #dsc_mem_short, #ext_ref, #id_mem, #id_mem_capco, #id_mem_inte, #lst_upd_ts, #mem_adr_1, #mem_adr_2, #type_mem, #mem_cle_id_mem_capco, #tax_num, #fax_nbr, #phone_nbr, #web_nm, #email_adr, #code_br, #parent_id, #uplift_factor, DEFAULT,'KPEIMID' )"/>
+         <property name="GetActiveUnitOfWork" value="false"/>
+      </interaction-spec>
+      <input/>
+   </endpoint-interaction>
+</adapter-config>

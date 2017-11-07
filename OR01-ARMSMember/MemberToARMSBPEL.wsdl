@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="MemberToARMSBPEL" targetNamespace="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL" xmlns:ns2="http://kpei.co.id/MDwsReply.xsd" xmlns:ns1="http://www.kpei.co.id/middleware" xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:ns3="http://xmlns.oracle.com/pcbpel/adapter/db/ARMS-Member" xmlns:client="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+   <plnk:partnerLinkType name="MemberToARMSBPEL">
+      <plnk:role name="MemberToARMSBPELProvider">
+         <plnk:portType name="client:MemberToARMSBPEL"/>
+      </plnk:role>
+   </plnk:partnerLinkType>
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://kpei.co.id/MDwsReply.xsd" xmlns:ns1="http://www.kpei.co.id/middleware" xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:ns3="http://xmlns.oracle.com/pcbpel/adapter/db/ARMS-Member" xmlns:client="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+         <import namespace="http://www.kpei.co.id/middleware" schemaLocation="xsd/ARMSMember-request.xsd"/>
+      </schema>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://kpei.co.id/MDwsReply.xsd" xmlns:ns1="http://www.kpei.co.id/middleware" xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:ns3="http://xmlns.oracle.com/pcbpel/adapter/db/ARMS-Member" xmlns:client="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+         <import namespace="http://kpei.co.id/MDwsReply.xsd" schemaLocation="xsd/MDwsReply.xsd"/>
+      </schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:ns2="http://kpei.co.id/MDwsReply.xsd" xmlns:ns1="http://www.kpei.co.id/middleware" xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:ns3="http://xmlns.oracle.com/pcbpel/adapter/db/ARMS-Member" xmlns:client="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+         <xsd:import namespace="http://xmlns.oracle.com/pcbpel/adapter/db/ARMS-Member" schemaLocation="xsd/ARMS_Member.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="MemberToARMSBPELRequestMessage">
+      <wsdl:part name="payload" element="ns1:MemberToARMS"/>
+   </wsdl:message>
+   <wsdl:message name="MemberToARMSBPELResponseMessage">
+      <wsdl:part name="payload" element="ns2:wsReply"/>
+   </wsdl:message>
+   <wsdl:portType name="MemberToARMSBPEL">
+      <wsdl:operation name="process">
+         <wsdl:input message="client:MemberToARMSBPELRequestMessage"/>
+         <wsdl:output message="client:MemberToARMSBPELResponseMessage"/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

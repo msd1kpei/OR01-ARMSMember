@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<getXMLDataReply xmlns="http://www.kpei.co.id/GE03-XMLUtility/types">
+   <xmlData>
+      <schemaName>schemaName25</schemaName>
+      <XPath>XPath26</XPath>
+      <Value>Value27</Value>
+   </xmlData>
+   <xmlData>
+      <schemaName>schemaName28</schemaName>
+      <XPath>XPath29</XPath>
+      <Value>Value30</Value>
+   </xmlData>
+   <xmlData>
+      <schemaName>schemaName31</schemaName>
+      <XPath>XPath32</XPath>
+      <Value>Value33</Value>
+   </xmlData>
+</getXMLDataReply>

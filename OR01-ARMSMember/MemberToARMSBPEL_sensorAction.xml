@@ -1,0 +1,11 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<actions targetNamespace="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL" xmlns="http://xmlns.oracle.com/bpel/sensor" xmlns:tns="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL" xmlns:pc="http://xmlns.oracle.com/bpel/sensor">
+   <action name="1.Initialization" publishName="OracleBam" publishType="BAM" enabled="true">
+      <property name="jcaFileName">bam/1.Initialization.jcabam</property>
+      <property name="bamTransform">bam/Initialization-toARMS.xsl</property>
+   </action>
+   <action name="6.Termination" publishName="OracleBam" publishType="BAM" enabled="true">
+      <property name="jcaFileName">bam/6.Termination.jcabam</property>
+      <property name="bamTransform">bam/Termination.xsl</property>
+   </action>
+</actions>

@@ -1,0 +1,50 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<MemberUpdate xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.kpei.co.id/middleware file:/C:/WORK/DEVELOPMENT/ARIS-KPEI-PROJECT/OR01-ARMSMember/xsd/ARMSMember-request.xsd" xmlns="http://www.kpei.co.id/middleware">
+   <header id="id1">
+      <asAt>2010-08-20T10:17:03.159</asAt>
+      <source>source2</source>
+   </header>
+   <type>type3</type>
+   <body>
+      <riskPointDomain>
+         <record id="id4">
+            <parents>
+               <parent/>
+            </parents>
+            <fields>
+               <field>string5</field>
+               <field>string6</field>
+               <field>string7</field>
+               <field>string8</field>
+            </fields>
+         </record>
+         <record id="id9">
+            <parents>
+               <parent/>
+            </parents>
+            <fields>
+               <field>string10</field>
+               <field>string11</field>
+               <field>string12</field>
+               <field>string13</field>
+            </fields>
+         </record>
+         <record id="id14">
+            <parents>
+               <parent/>
+            </parents>
+            <fields>
+               <field>string15</field>
+               <field>string16</field>
+               <field>string17</field>
+               <field>string18</field>
+            </fields>
+         </record>
+      </riskPointDomain>
+   </body>
+   <ext>
+      <value id="id19">string20</value>
+      <value id="id21">string22</value>
+      <value id="id23">string24</value>
+   </ext>
+</MemberUpdate>

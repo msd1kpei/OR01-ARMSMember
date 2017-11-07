@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+   <service name="bpelprocess1_client" ui:wsdlLocation="MemberToARMS_JMS.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/MemberToARMS_JMS#wsdl.interface(ConsumeMessageMemberQueue_ptt)"/>
+   </service>
+   <reference name="MemberToARMSBPEL.membertoarmsbpel_client" ui:wsdlLocation="MemberToARMSBPEL.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL#wsdl.interface(MemberToARMSBPEL)"/>
+   </reference>
+   <reference name="MemberResponseQueueJMS" ui:wsdlLocation="MemberResponseQueueJMS.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/MemberResponseQueueJMS#wsdl.interface(Produce_Message_ptt)"/>
+   </reference>
+</componentType>

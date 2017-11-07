@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kpeiInbound xmlns="http://www.kpei.co.id/razor/Member_EOD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.kpei.co.id/razor/Member_EOD file:/C:/WORK/DEVELOPMENT/ARIS-KPEI-PROJECT/OR01-ARMSMember/xsd/Member_EOD.xsd">
+   <header id="id118">
+      <asAt>2010-08-20T10:42:48.228</asAt>
+      <sourceSystem>source119</sourceSystem>
+   </header>
+   <body>
+      <content>
+         <riskPointDomains>
+            <riskPointDomain id="Value144">
+               <record id="id121">
+                  <parents>
+                     <parent id="KPEI_GRP"/>
+                  </parents>
+                  <fields>
+                     <field id="SERVICESERVER">string122</field>
+                     <field id="">string123</field>
+                     <field id="">string124</field>
+                  </fields>
+               </record>
+               <record id="id126">
+                  <fields>
+                     <field id="">string127</field>
+                     <field id="">string128</field>
+                     <field id="">string129</field>
+                     <field id="">string130</field>
+                  </fields>
+               </record>
+               <record id="id131">
+                  <parents>
+                     <parent id=""/>
+                  </parents>
+                  <fields>
+                     <field id="">string132</field>
+                     <field id="">string133</field>
+                     <field id="">string134</field>
+                     <field id="">string135</field>
+                  </fields>
+               </record>
+            </riskPointDomain>
+         </riskPointDomains>
+      </content>
+   </body>
+</kpeiInbound>

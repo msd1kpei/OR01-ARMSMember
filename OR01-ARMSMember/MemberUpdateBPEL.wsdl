@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="MemberUpdateBPEL" targetNamespace="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberUpdateBPEL" xmlns:ns2="http://kpei.co.id/MDwsReply.xsd" xmlns:ns1="http://www.kpei.co.id/middleware" xmlns:ns4="http://www.kpei.co.id/razor/Member_Intraday" xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:ns3="http://www.kpei.co.id/razor/Member_EOD" xmlns:client="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberUpdateBPEL" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+   <plnk:partnerLinkType name="MemberUpdateBPEL">
+      <plnk:role name="MemberUpdateBPELProvider">
+         <plnk:portType name="client:MemberUpdateBPEL"/>
+      </plnk:role>
+   </plnk:partnerLinkType>
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://www.kpei.co.id/middleware" schemaLocation="xsd/ARMSMember-request.xsd"/>
+      </schema>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://kpei.co.id/MDwsReply.xsd" schemaLocation="xsd/MDwsReply.xsd"/>
+      </schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="http://www.kpei.co.id/razor/Member_EOD" schemaLocation="xsd/Member_EOD.xsd"/>
+      </xsd:schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="http://www.kpei.co.id/razor/Member_Intraday" schemaLocation="xsd/Member_Intraday.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="MemberUpdateBPELRequestMessage">
+      <wsdl:part name="payload" element="ns1:MemberUpdate"/>
+   </wsdl:message>
+   <wsdl:message name="MemberUpdateBPELResponseMessage">
+      <wsdl:part name="payload" element="ns2:wsReply"/>
+   </wsdl:message>
+   <wsdl:portType name="MemberUpdateBPEL">
+      <wsdl:operation name="process">
+         <wsdl:input message="client:MemberUpdateBPELRequestMessage"/>
+         <wsdl:output message="client:MemberUpdateBPELResponseMessage"/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

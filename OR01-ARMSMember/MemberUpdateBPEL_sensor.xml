@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<sensors targetNamespace="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberUpdateBPEL" xmlns="http://xmlns.oracle.com/bpel/sensor" xmlns:tns="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberUpdateBPEL" xmlns:pc="http://xmlns.oracle.com/bpel/sensor" xmlns:ns10="http://www.kpei.co.id/schema/Member.001">
+   <sensor sensorName="1.Initialization" classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="receiveInput">
+      <activityConfig evalTime="activation">
+         <variable outputDataType="string" outputNamespace="http://www.w3.org/2001/XMLSchema" target="$inputVariable/payload/ns10:MemberUpdate/ns10:header/@id"/>
+      </activityConfig>
+   </sensor>
+   <sensor sensorName="2.Enrichment" classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="enrichment">
+      <activityConfig evalTime="completion"/>
+   </sensor>
+   <sensor sensorName="3.Sending-Local" classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="writeLocal">
+      <activityConfig evalTime="completion"/>
+   </sensor>
+   <sensor sensorName="4.Sending-RMS" classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="writeExt">
+      <activityConfig evalTime="completion"/>
+   </sensor>
+   <sensor sensorName="5.Sending-DRC" classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="writeDRC">
+      <activityConfig evalTime="completion"/>
+   </sensor>
+   <sensor sensorName="6.Termination" classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="logOutboundRelation">
+      <activityConfig evalTime="completion"/>
+   </sensor>
+</sensors>

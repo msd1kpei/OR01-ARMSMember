@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<adapter-config name="MemberResponseQueue-JMS" adapter="Jms Adapter" wsdlLocation="MemberResponseQueue_JMS.wsdl" xmlns="http://platform.integration.oracle/blocks/adapter/fw/metadata">
+   <connection-factory location="eis/jms/eclearsMembersResponse" UIConnectionName="AlbacoreDev" UIJmsProvider="WLSJMS" adapterRef=""/>
+   <endpoint-interaction portType="ProduceMessageMemberResponseQueue_ptt" operation="ProduceMessageMemberResponseQueue">
+      <interaction-spec className="oracle.tip.adapter.jms.outbound.JmsProduceInteractionSpec">
+         <property name="DestinationName" value="jms/eclears/eCLEARSMemberResponseQueue"/>
+         <property name="DeliveryMode" value="Persistent"/>
+         <property name="TimeToLive" value="0"/>
+         <property name="PayloadType" value="TextMessage"/>
+      </interaction-spec>
+   </endpoint-interaction>
+</adapter-config>

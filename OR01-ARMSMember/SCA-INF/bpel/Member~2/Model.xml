@@ -1,0 +1,593 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<process name="MemberUpdateBPEL" targetNamespace="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberUpdateBPEL" xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/" xmlns:client="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberUpdateBPEL" xmlns:ora="http://schemas.oracle.com/xpath/extension" xmlns:bpelx="http://schemas.oracle.com/bpel/extension" xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/" xmlns:ns1="http://oracle.com/sca/soapservice/KPEI-MIDDLEWARE/Ge01-messageMonitor/messageMonitorService" xmlns:ns2="http://www.kpei.co.id/GE02-FileUtility" xmlns:ns3="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility" xmlns:ns4="http://xmlns.oracle.com/pcbpel/adapter/file/ARIS-KPEI-PROJECT/OR01-ARMSMember/update_EOD_writeLocal" xmlns:ns5="http://xmlns.oracle.com/pcbpel/adapter/file/ARIS-KPEI-PROJECT/OR01-ARMSMember/update_IntraDay_write" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xpath20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20" xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc" xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue" xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk" xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions" xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap" xmlns:ns6="http://kpei.co.id/MDwsReply.xsd" xmlns:ns7="http://www.kpei.co.id/razor/Member_EOD" xmlns:ns8="http://www.kpei.co.id/razor/Member_Intraday" xmlns:ns9="http://www.kpei.co.id/kpei/messageMonitor" xmlns:ns10="http://www.kpei.co.id/middleware" xmlns:socket="http://www.oracle.com/XSL/Transform/java/oracle.tip.adapter.socket.ProtocolTranslator" xmlns:mhdr="http://www.oracle.com/XSL/Transform/java/oracle.tip.mediator.service.common.functions.MediatorExtnFunction" xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath" xmlns:med="http://schemas.oracle.com/mediator/xpath" xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath" xmlns:ns11="http://www.kpei.co.id/GE03-XMLUtility/types" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns12="http://www.kpei.co.id/GE02-FileUtility/types" xmlns:ns13="http://docs.oasis-open.org/wsbpel/2.0/process/executable" xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions" xmlns:bpmn="http://schemas.oracle.com/bpm/xpath" xmlns:ns14="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/MemberUpdate" id="BpPrc0">
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  --> 
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="memberupdatebpel_client" partnerLinkType="client:MemberUpdateBPEL" myRole="MemberUpdateBPELProvider"/>
+    <partnerLink name="GE01-MessageMonitor" partnerRole="messageMonitor" partnerLinkType="ns1:GE01-MessageMonitor"/>
+    <partnerLink name="GE02-FileUtility" partnerRole="GE02-FileUtility" partnerLinkType="ns2:GE02-FileUtility"/>
+    <partnerLink name="GE03-XMLUtility" partnerRole="GE03-XMLUtility" partnerLinkType="ns3:GE03-XMLUtility"/>
+    <partnerLink name="update-EOD-writeLocal" partnerRole="Write-updateEOD_role" partnerLinkType="ns4:Write_updateEOD_plt"/>
+    <partnerLink name="update-IntraDay-write" partnerRole="Write-intraday_role" partnerLinkType="ns5:Write_intraday_plt"/>
+    <partnerLink name="MemberUpdate" partnerRole="Produce_Message_role" partnerLinkType="ns14:Produce_Message_plt"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:MemberUpdateBPELRequestMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:MemberUpdateBPELResponseMessage"/>
+    <variable name="filename" type="xsd:string"/>
+    <variable name="dir_local" type="xsd:string"/>
+    <variable name="dir_ext" type="xsd:string"/>
+    <variable name="dir_drc" type="xsd:string"/>
+    <variable name="digest" type="xsd:string"/>
+    <variable name="invalidVar" messageType="bpelx:RuntimeFaultMessage"/>
+    <variable name="Reply_Validation_process_OutputVariable" messageType="client:MemberUpdateBPELResponseMessage"/>
+    <variable name="dir_what-if" type="xsd:string"/>
+    <variable name="i_SKD_Produce_Message_InputVariable" messageType="ns14:Produce_Message_msg"/>
+  </variables>
+  <faultHandlers id="BpFhs0">
+    <catch faultName="bpelx:invalidVariables" faultVariable="invalidVar" id="BpCFt0">
+      <sequence id="BpSeq0">
+        <assign name="invalidVar" id="BpAss0">
+          <copy>
+            <from expression="xpath20:current-dateTime()"/>
+            <to variable="Reply_Validation_process_OutputVariable" part="payload" query="/ns6:wsReply/ns6:receiveDateTime"/>
+          </copy>
+          <copy>
+            <from expression="'ERROR'"/>
+            <to variable="Reply_Validation_process_OutputVariable" part="payload" query="/ns6:wsReply/ns6:status"/>
+          </copy>
+          <copy>
+            <from expression="string(bpws:getVariableData('invalidVar','summary'))"/>
+            <to variable="Reply_Validation_process_OutputVariable" part="payload" query="/ns6:wsReply/ns6:description"/>
+          </copy>
+        </assign>
+        <reply name="Reply_Validation" variable="Reply_Validation_process_OutputVariable" partnerLink="memberupdatebpel_client" portType="client:MemberUpdateBPEL" operation="process" id="BpRpl0"/>
+      </sequence>
+    </catch>
+  </faultHandlers>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main" id="BpSeq1">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in MemberUpdateBPEL.wsdl) -->
+    <receive name="receiveInput" partnerLink="memberupdatebpel_client" portType="client:MemberUpdateBPEL" operation="process" variable="inputVariable" createInstance="yes" id="BpRcv0"/>
+
+    <!-- Generate reply to synchronous request -->
+    <bpelx:validate name="inputValidation" variables="inputVariable" id="BpVal0"/>
+    <assign name="assign_sukses" id="BpAss1">
+      <copy>
+        <from expression="xpath20:current-dateTime()"/>
+        <to variable="outputVariable" part="payload" query="/ns6:wsReply/ns6:receiveDateTime"/>
+      </copy>
+      <copy>
+        <from expression="'SUCCESS'"/>
+        <to variable="outputVariable" part="payload" query="/ns6:wsReply/ns6:status"/>
+      </copy>
+      <copy>
+        <from expression="'Member Update BPEL telah berhasil diproses.'"/>
+        <to variable="outputVariable" part="payload" query="/ns6:wsReply/ns6:description"/>
+      </copy>
+    </assign>
+    <assign name="settingFilename" id="BpAss2">
+      <copy>
+        <from expression="ora:getCurrentDateTime(&quot;yyyyMMddHHmmssSSS'_member.xml'&quot;)"/>
+        <to variable="filename"/>
+      </copy>
+    </assign>
+    <scope name="processing" id="BpScp0">
+      <variables>
+        <variable name="temp_EOD_msg" element="ns7:kpeiInbound"/>
+        <variable name="temp_Intra_msg" element="ns8:kpeiInbound"/>
+        <variable name="logInbound_sendInboundMonitor_InputVariable" messageType="ns1:requestInboundMessage"/>
+        <variable name="logInbound_sendInboundMonitor_OutputVariable" messageType="ns1:replyMessage"/>
+        <variable name="reference_getXMLData_InputVariable" messageType="ns3:getXMLDataRequestMessage"/>
+        <variable name="reference_getXMLData_OutputVariable" messageType="ns3:getXMLDataReplyMessage"/>
+        <variable name="messageDigest_getMiddlewareConfig_InputVariable" messageType="ns3:getMiddlewareConfigRequestMessage"/>
+        <variable name="messageDigest_getMiddlewareConfig_OutputVariable" messageType="ns3:getMiddlewareConfigReplyMessage"/>
+        <variable name="local_getLogicalDirectory_InputVariable" messageType="ns3:getLogicalDirectoryRequestMessage"/>
+        <variable name="local_getLogicalDirectory_OutputVariable" messageType="ns3:getLogicalDirectoryReplyMessage"/>
+        <variable name="ext_getLogicalDirectory_InputVariable" messageType="ns3:getLogicalDirectoryRequestMessage"/>
+        <variable name="ext_getLogicalDirectory_OutputVariable" messageType="ns3:getLogicalDirectoryReplyMessage"/>
+        <variable name="drc_getLogicalDirectory_InputVariable" messageType="ns3:getLogicalDirectoryRequestMessage"/>
+        <variable name="drc_getLogicalDirectory_OutputVariable" messageType="ns3:getLogicalDirectoryReplyMessage"/>
+        <variable name="writeLocal_intra_Write-intraday_InputVariable" messageType="ns5:Write-intraday_msg"/>
+        <variable name="writeLocal_EOD_Write-updateEOD_InputVariable" messageType="ns4:Write-updateEOD_msg"/>
+        <variable name="writeExt_copyFile_InputVariable" messageType="ns2:copyFileRequestMessage"/>
+        <variable name="writeExt_copyFile_OutputVariable" messageType="ns2:copyFileReplyMessage"/>
+        <variable name="writeDRC_copyFile_InputVariable" messageType="ns2:copyFileRequestMessage"/>
+        <variable name="writeDRC_copyFile_OutputVariable" messageType="ns2:copyFileReplyMessage"/>
+        <variable name="logOutbound_sendOutboundMonitor_InputVariable" messageType="ns1:requestOutboundMessage"/>
+        <variable name="logOutbound_sendOutboundMonitor_OutputVariable" messageType="ns1:replyMessage"/>
+        <variable name="logRelation_sendRelationMonitor_InputVariable" messageType="ns1:requestRelationMessage"/>
+        <variable name="logRelation_sendRelationMonitor_OutputVariable" messageType="ns1:replyMessage"/>
+        <variable name="what-if_getLogicalDirectory_InputVariable" messageType="ns3:getLogicalDirectoryRequestMessage"/>
+        <variable name="what-if_getLogicalDirectory_OutputVariable" messageType="ns3:getLogicalDirectoryReplyMessage"/>
+        <variable name="writeWhat-If_copyFile_InputVariable" messageType="ns2:copyFileRequestMessage"/>
+        <variable name="writeWhat-If_copyFile_OutputVariable" messageType="ns2:copyFileReplyMessage"/>
+      </variables>
+      <faultHandlers id="BpFhs1">
+        <catchAll id="BpCAl0">
+         <assign name="assign_error" id="BpAss3">
+            <copy>
+              <from expression="xpath20:current-dateTime()"/>
+              <to variable="outputVariable" part="payload" query="/ns6:wsReply/ns6:receiveDateTime"/>
+            </copy>
+            <copy>
+              <from expression="'ERROR'"/>
+              <to variable="outputVariable" part="payload" query="/ns6:wsReply/ns6:status"/>
+            </copy>
+            <copy>
+              <from expression="concat('[MW001] Error pada komponen Member pdate BPEL, InstanceId=',string(ora:getInstanceId()),' Error=',ora:getFaultAsString())"/>
+              <to variable="outputVariable" part="payload" query="/ns6:wsReply/ns6:description"/>
+            </copy>
+          </assign>
+        </catchAll>
+      </faultHandlers>
+      <sequence name="Sequence_1" id="BpSeq2">
+        <sequence name="log_inbound" id="BpSeq3">
+          <assign name="a_inbound" id="BpAss4">
+            <copy>
+              <from expression="concat('messsageName=OR01-ARMSMember|CompositeInstanceId=',ora:getCompositeInstanceId(),'|ComponentName=',ora:getComponentName(),'|','Description=Message Member telah berhasil diproses.')"/>
+              <to variable="logInbound_sendInboundMonitor_InputVariable" part="request" query="/ns9:inboundMonitorRequest/ns9:inboundMonitor/ns9:description"/>
+            </copy>
+            <copy>
+              <from expression="'SUCCESS'"/>
+              <to variable="logInbound_sendInboundMonitor_InputVariable" part="request" query="/ns9:inboundMonitorRequest/ns9:inboundMonitor/ns9:status"/>
+            </copy>
+            <copy>
+              <from expression="ora:countNodes('inputVariable','payload','/ns10:MemberUpdate/ns10:body/ns10:riskPointDomain/ns10:record')"/>
+              <to variable="logInbound_sendInboundMonitor_InputVariable" part="request" query="/ns9:inboundMonitorRequest/ns9:inboundMonitor/ns9:rowCount"/>
+            </copy>
+            <copy>
+              <from variable="inputVariable" part="payload" query="/ns10:MemberUpdate/ns10:header/@id"/>
+              <to variable="logInbound_sendInboundMonitor_InputVariable" part="request" query="/ns9:inboundMonitorRequest/ns9:inboundMonitor/ns9:Filename"/>
+            </copy>
+            <copy>
+              <from variable="inputVariable" part="payload" query="/ns10:MemberUpdate/ns10:header/ns10:asAt"/>
+              <to variable="logInbound_sendInboundMonitor_InputVariable" part="request" query="/ns9:inboundMonitorRequest/ns9:inboundMonitor/ns9:ReceiveDate"/>
+            </copy>
+          </assign>
+          <invoke name="logInbound" inputVariable="logInbound_sendInboundMonitor_InputVariable" outputVariable="logInbound_sendInboundMonitor_OutputVariable" partnerLink="GE01-MessageMonitor" portType="ns1:messageMonitor" operation="sendInboundMonitor" id="BpInv0"/>
+        </sequence>
+        <sequence name="getReference" id="BpSeq4">
+          <switch name="EOD_or_Itra" id="BpSwt0">
+            <case condition="contains(string(bpws:getVariableData('inputVariable','payload','/ns10:MemberUpdate/ns10:type')),'INTRA')">
+              <bpelx:annotation>
+                <bpelx:pattern>intra</bpelx:pattern>
+              </bpelx:annotation>
+              <assign name="assignUpdate" id="BpAss5">
+                <copy>
+                  <from expression="'memberUpdate'"/>
+                  <to variable="reference_getXMLData_InputVariable" part="request" query="/ns11:getXMLDataRequest/ns11:schemaName"/>
+                </copy>
+              </assign>
+            </case>
+            <case condition="contains(string(bpws:getVariableData('inputVariable','payload','/ns10:MemberUpdate/ns10:type')),'EOD')">
+              <bpelx:annotation>
+                <bpelx:pattern>EOD</bpelx:pattern>
+              </bpelx:annotation>
+              <assign name="assignEOD" id="BpAss6">
+                <copy>
+                  <from expression="'memberUpdateEOD'"/>
+                  <to variable="reference_getXMLData_InputVariable" part="request" query="/ns11:getXMLDataRequest/ns11:schemaName"/>
+                </copy>
+              </assign>
+            </case>
+            <otherwise>
+              <throw name="type_not_match" faultName="bpws:forcedTermination" id="BpThw0"/>
+            </otherwise>
+          </switch>
+          <invoke name="reference" inputVariable="reference_getXMLData_InputVariable" outputVariable="reference_getXMLData_OutputVariable" partnerLink="GE03-XMLUtility" portType="ns3:GE03-XMLUtility" operation="getXMLData" id="BpInv1"/>
+        </sequence>
+        <sequence name="enrichment" id="BpSeq5">
+          <switch name="enrichment_process" id="BpSwt1">
+            <case condition="contains(string(bpws:getVariableData('inputVariable','payload','/ns10:MemberUpdate/ns10:type')),'INTRA')">
+              <bpelx:annotation>
+                <bpelx:pattern>intra</bpelx:pattern>
+              </bpelx:annotation>
+              <sequence id="BpSeq6">
+                <assign name="enrichIntra" id="BpAss7">
+                  <bpelx:annotation>
+                    <bpelx:pattern>transformation</bpelx:pattern>
+                  </bpelx:annotation>
+                  <copy>
+                    <from expression="ora:doXSLTransformForDoc('xsl/enrichUpdateIntra.xsl',bpws:getVariableData('inputVariable','payload'),'reference_getXMLData_OutputVariable.reply',bpws:getVariableData('reference_getXMLData_OutputVariable','reply'))"/>
+                    <to variable="temp_Intra_msg"/>
+                  </copy>
+                </assign>
+                <assign name="assignIntra" id="BpAss8">
+                  <copy>
+                    <from expression="substring-before(string(bpws:getVariableData('filename')),'.xml')"/>
+                    <to variable="temp_Intra_msg" query="/ns8:kpeiInbound/ns8:header/@id"/>
+                  </copy>
+                  <copy>
+                    <from expression="xpath20:current-dateTime()"/>
+                    <to variable="temp_Intra_msg" query="/ns8:kpeiInbound/ns8:header/ns8:asAt"/>
+                  </copy>
+                </assign>
+              </sequence>
+            </case>
+            <case condition="contains(string(bpws:getVariableData('inputVariable','payload','/ns10:MemberUpdate/ns10:type')),'EOD')">
+              <bpelx:annotation>
+                <bpelx:pattern>EOD</bpelx:pattern>
+              </bpelx:annotation>
+              <sequence id="BpSeq7">
+                <assign name="enrichEOD" id="BpAss9">
+                  <bpelx:annotation>
+                    <bpelx:pattern>transformation</bpelx:pattern>
+                  </bpelx:annotation>
+                  <copy>
+                    <from expression="ora:doXSLTransformForDoc('xsl/enrichUpdateEOD-2.xsl',bpws:getVariableData('inputVariable','payload'),'reference_getXMLData_OutputVariable.reply',bpws:getVariableData('reference_getXMLData_OutputVariable','reply'))"/>
+                    <to variable="temp_EOD_msg"/>
+                  </copy>
+                </assign>
+                <assign name="assignEOD" id="BpAss10">
+                  <copy>
+                    <from expression="substring-before(string(bpws:getVariableData('filename')),'.xml')"/>
+                    <to variable="temp_EOD_msg" query="/ns7:kpeiInbound/ns7:header/@id"/>
+                  </copy>
+                  <copy>
+                    <from expression="xpath20:current-dateTime()"/>
+                    <to variable="temp_EOD_msg" query="/ns7:kpeiInbound/ns7:header/ns7:asAt"/>
+                  </copy>
+                </assign>
+              </sequence>
+            </case>
+            <otherwise>
+              <throw name="type_not_match" faultName="bpws:forcedTermination" id="BpThw1"/>
+            </otherwise>
+          </switch>
+        </sequence>
+        <sequence name="simpanKirim" id="BpSeq8">
+          <flow name="getReference" id="BpFlw0">
+            <sequence name="getMessageDigest" id="BpSeq9">
+              <assign name="messageDigest" id="BpAss11">
+                <copy>
+                  <from expression="'MESSAGE_DIGEST'"/>
+                  <to variable="messageDigest_getMiddlewareConfig_InputVariable" part="request" query="/ns11:getMiddlewareConfigRequest/ns11:MiddlewareParam"/>
+                </copy>
+              </assign>
+              <invoke name="messageDigest" inputVariable="messageDigest_getMiddlewareConfig_InputVariable" outputVariable="messageDigest_getMiddlewareConfig_OutputVariable" partnerLink="GE03-XMLUtility" portType="ns3:GE03-XMLUtility" operation="getMiddlewareConfig" id="BpInv2"/>
+              <assign name="a_digest" id="BpAss12">
+                <copy>
+                  <from expression="string(bpws:getVariableData('messageDigest_getMiddlewareConfig_OutputVariable','reply','/ns11:getMiddlewareConfigReply/ns11:Value'))"/>
+                  <to variable="digest"/>
+                </copy>
+              </assign>
+            </sequence>
+            <sequence name="logicalDirectory" id="BpSeq10">
+              <switch name="getReference" id="BpSwt2">
+                <case condition="contains(string(bpws:getVariableData('inputVariable','payload','/ns10:MemberUpdate/ns10:type')),'INTRA')">
+                  <bpelx:annotation>
+                    <bpelx:pattern>intra</bpelx:pattern>
+                  </bpelx:annotation>
+                  <sequence id="BpSeq11">
+                    <assign name="INTRA" id="BpAss13">
+                      <copy>
+                        <from expression="'ARMSMember_local'"/>
+                        <to variable="local_getLogicalDirectory_InputVariable" part="request" query="/ns11:getLogicalDirectoryRequest/ns11:logicalDirectoryName"/>
+                      </copy>
+                      <copy>
+                        <from expression="'ARMSMember_ext'"/>
+                        <to variable="ext_getLogicalDirectory_InputVariable" part="request" query="/ns11:getLogicalDirectoryRequest/ns11:logicalDirectoryName"/>
+                      </copy>
+                      <copy>
+                        <from expression="'ARMSMember_drc'"/>
+                        <to part="request" query="/ns11:getLogicalDirectoryRequest/ns11:logicalDirectoryName" variable="drc_getLogicalDirectory_InputVariable"/>
+                      </copy>
+                      <copy>
+                        <from expression="'ARMSMember_what-if'"/>
+                        <to variable="what-if_getLogicalDirectory_InputVariable" part="request" query="/ns11:getLogicalDirectoryRequest/ns11:logicalDirectoryName"/>
+                      </copy>
+                    </assign>
+                  </sequence>
+                </case>
+                <case condition="contains(string(bpws:getVariableData('inputVariable','payload','/ns10:MemberUpdate/ns10:type')),'EOD')">
+                  <bpelx:annotation>
+                    <bpelx:pattern>EOD</bpelx:pattern>
+                  </bpelx:annotation>
+                  <sequence id="BpSeq12">
+                    <assign name="EOD" id="BpAss14">
+                      <copy>
+                        <from expression="'ARMSMember_localEOD'"/>
+                        <to variable="local_getLogicalDirectory_InputVariable" part="request" query="/ns11:getLogicalDirectoryRequest/ns11:logicalDirectoryName"/>
+                      </copy>
+                      <copy>
+                        <from expression="'ARMSMember_extEOD'"/>
+                        <to variable="ext_getLogicalDirectory_InputVariable" part="request" query="/ns11:getLogicalDirectoryRequest/ns11:logicalDirectoryName"/>
+                      </copy>
+                      <copy>
+                        <from expression="'ARMSMember_drcEOD'"/>
+                        <to part="request" query="/ns11:getLogicalDirectoryRequest/ns11:logicalDirectoryName" variable="drc_getLogicalDirectory_InputVariable"/>
+                      </copy>
+                      <copy>
+                        <from expression="'ARMSMember_whatifEOD'"/>
+                        <to variable="what-if_getLogicalDirectory_InputVariable" part="request" query="/ns11:getLogicalDirectoryRequest/ns11:logicalDirectoryName"/>
+                      </copy>
+                    </assign>
+                  </sequence>
+                </case>
+                <otherwise>
+                  <throw name="type_not_match" faultName="bpws:forcedTermination" id="BpThw2"/>
+                </otherwise>
+              </switch>
+              <invoke name="local" inputVariable="local_getLogicalDirectory_InputVariable" outputVariable="local_getLogicalDirectory_OutputVariable" partnerLink="GE03-XMLUtility" portType="ns3:GE03-XMLUtility" operation="getLogicalDirectory" id="BpInv3"/>
+              <invoke name="ext" inputVariable="ext_getLogicalDirectory_InputVariable" outputVariable="ext_getLogicalDirectory_OutputVariable" partnerLink="GE03-XMLUtility" portType="ns3:GE03-XMLUtility" operation="getLogicalDirectory" id="BpInv4"/>
+              <invoke name="drc" inputVariable="drc_getLogicalDirectory_InputVariable" outputVariable="drc_getLogicalDirectory_OutputVariable" partnerLink="GE03-XMLUtility" portType="ns3:GE03-XMLUtility" operation="getLogicalDirectory" id="BpInv5"/>
+              <invoke name="what-if" inputVariable="what-if_getLogicalDirectory_InputVariable" outputVariable="what-if_getLogicalDirectory_OutputVariable" partnerLink="GE03-XMLUtility" portType="ns3:GE03-XMLUtility" operation="getLogicalDirectory" id="BpInv6"/>
+              <assign name="a_dir" id="BpAss15">
+                <copy>
+                  <from variable="local_getLogicalDirectory_OutputVariable" part="reply" query="/ns11:getLogicalDirectoryReply/ns11:logicalDirectory/ns11:physicalPath"/>
+                  <to variable="dir_local"/>
+                </copy>
+                <copy>
+                  <from variable="ext_getLogicalDirectory_OutputVariable" part="reply" query="/ns11:getLogicalDirectoryReply/ns11:logicalDirectory/ns11:physicalPath"/>
+                  <to variable="dir_ext"/>
+                </copy>
+                <copy>
+                  <from variable="drc_getLogicalDirectory_OutputVariable" part="reply" query="/ns11:getLogicalDirectoryReply/ns11:logicalDirectory/ns11:physicalPath"/>
+                  <to variable="dir_drc"/>
+                </copy>
+                <copy>
+                  <from variable="what-if_getLogicalDirectory_OutputVariable" part="reply" query="/ns11:getLogicalDirectoryReply/ns11:logicalDirectory/ns11:physicalPath"/>
+                  <to variable="dir_what-if"/>
+                </copy>
+              </assign>
+            </sequence>
+          </flow>
+          <sequence name="writeLocal" id="BpSeq13">
+            <switch name="local" id="BpSwt3">
+                <case condition="contains(string(bpws:getVariableData('inputVariable','payload','/ns10:MemberUpdate/ns10:type')),'INTRA')">
+                  <bpelx:annotation>
+                    <bpelx:pattern>intra</bpelx:pattern>
+                  </bpelx:annotation>
+                  <sequence id="BpSeq14">
+                  <assign name="a_writeLocal" id="BpAss16">
+                    <copy>
+                      <from variable="temp_Intra_msg" query="/ns8:kpeiInbound"/>
+                      <to variable="writeLocal_intra_Write-intraday_InputVariable" part="body" query="/ns8:kpeiInbound"/>
+                    </copy>
+                  </assign>
+                  <assign name="assignDateZ" id="BpAss17">
+                    <copy>
+                      <from expression="concat(xpath20:format-dateTime(string(bpws:getVariableData('writeLocal_intra_Write-intraday_InputVariable','body','/ns8:kpeiInbound/ns8:header/ns8:asAt')),'[Y0001]-[M01]-[D01]T[H01]:[m01]:[s01]'),'Z')"/>
+                      <to variable="writeLocal_intra_Write-intraday_InputVariable" part="body" query="/ns8:kpeiInbound/ns8:header/ns8:asAt"/>
+                    </copy>
+                  </assign>
+                  <invoke name="writeLocal_intra" inputVariable="writeLocal_intra_Write-intraday_InputVariable" partnerLink="update-IntraDay-write" portType="ns5:Write_intraday_ptt" operation="Write-intraday" id="BpInv7">
+                    <bpelx:inputProperty name="jca.file.Directory" variable="dir_local"/>
+                    <bpelx:inputProperty name="jca.file.FileName" variable="filename"/>
+                  </invoke>
+                </sequence>
+                </case>
+                <case condition="contains(string(bpws:getVariableData('inputVariable','payload','/ns10:MemberUpdate/ns10:type')),'EOD')">
+                  <bpelx:annotation>
+                    <bpelx:pattern>EOD</bpelx:pattern>
+                  </bpelx:annotation>
+                  <sequence id="BpSeq15">
+                  <assign name="a_writeLocalEOD" id="BpAss18">
+                    <copy>
+                      <from variable="temp_EOD_msg" query="/ns7:kpeiInbound"/>
+                      <to variable="writeLocal_EOD_Write-updateEOD_InputVariable" part="body" query="/ns7:kpeiInbound"/>
+                    </copy>
+                  </assign>
+                  <assign name="assignDateZ" id="BpAss19">
+                    <copy>
+                      <from expression="concat(xpath20:format-dateTime(string(bpws:getVariableData('writeLocal_EOD_Write-updateEOD_InputVariable','body','/ns7:kpeiInbound/ns7:header/ns7:asAt')),'[Y0001]-[M01]-[D01]T[H01]:[m01]:[s01]'),'Z')"/>
+                      <to variable="writeLocal_EOD_Write-updateEOD_InputVariable" part="body" query="/ns7:kpeiInbound/ns7:header/ns7:asAt"/>
+                    </copy>
+                  </assign>
+                  <invoke name="writeLocal_EOD" inputVariable="writeLocal_EOD_Write-updateEOD_InputVariable" partnerLink="update-EOD-writeLocal" portType="ns4:Write_updateEOD_ptt" operation="Write-updateEOD" id="BpInv8">
+                    <bpelx:inputProperty name="jca.file.Directory" variable="dir_local"/>
+                    <bpelx:inputProperty name="jca.file.FileName" variable="filename"/>
+                  </invoke>
+                </sequence>
+                </case>
+                <otherwise>
+                  <throw name="type_not_match" faultName="bpws:forcedTermination" id="BpThw3"/>
+                </otherwise>
+              </switch>
+          </sequence>
+          <sequence name="writeExt" id="BpSeq16">
+            <assign name="a_writeExt" id="BpAss20">
+              <copy>
+                <from variable="dir_local"/>
+                <to variable="writeExt_copyFile_InputVariable" part="request" query="/ns12:copyFileRequest/ns12:sourceDirectory"/>
+              </copy>
+              <copy>
+                <from variable="dir_ext"/>
+                <to variable="writeExt_copyFile_InputVariable" part="request" query="/ns12:copyFileRequest/ns12:targetDirectory"/>
+              </copy>
+              <copy>
+                <from variable="filename"/>
+                <to variable="writeExt_copyFile_InputVariable" part="request" query="/ns12:copyFileRequest/ns12:fileName"/>
+              </copy>
+              <copy>
+                <from expression="xpath20:lower-case(string(bpws:getVariableData('digest')))"/>
+                <to variable="writeExt_copyFile_InputVariable" part="request" query="/ns12:copyFileRequest/ns12:messageDigest"/>
+              </copy>
+            </assign>
+            <invoke name="writeExt" inputVariable="writeExt_copyFile_InputVariable" outputVariable="writeExt_copyFile_OutputVariable" partnerLink="GE02-FileUtility" portType="ns2:GE02-FileUtility" operation="copyFile" id="BpInv9"/>
+            <switch name="Switch_1" id="BpSwt4">
+              <case condition="contains(string(bpws:getVariableData('writeExt_copyFile_OutputVariable','reply','/ns12:copyFileReply/ns12:status')),'ERROR')">
+                <throw name="ERROR" faultName="bpws:selectionFailure" id="BpThw4"/>
+              </case>
+              <otherwise>
+                <assign name="add_success_response" id="BpAss21">
+                  <copy>
+                    <from expression="concat(string(bpws:getVariableData('outputVariable','payload','/ns6:wsReply/ns6:description')),' RMS_PATH=',string(bpws:getVariableData('ext_getLogicalDirectory_OutputVariable','reply','/ns11:getLogicalDirectoryReply/ns11:logicalDirectory/ns11:physicalPath')))"/>
+                    <to variable="outputVariable" part="payload" query="/ns6:wsReply/ns6:description"/>
+                  </copy>
+                </assign>
+              </otherwise>
+            </switch>
+          </sequence>
+          <sequence name="writeDRC" id="BpSeq17">
+            <assign name="a_writeDRC" id="BpAss22">
+              <copy>
+                <from variable="dir_local"/>
+                <to variable="writeDRC_copyFile_InputVariable" part="request" query="/ns12:copyFileRequest/ns12:sourceDirectory"/>
+              </copy>
+              <copy>
+                <from variable="dir_drc"/>
+                <to variable="writeDRC_copyFile_InputVariable" part="request" query="/ns12:copyFileRequest/ns12:targetDirectory"/>
+              </copy>
+              <copy>
+                <from variable="filename"/>
+                <to variable="writeDRC_copyFile_InputVariable" part="request" query="/ns12:copyFileRequest/ns12:fileName"/>
+              </copy>
+              <copy>
+                <from expression="xpath20:lower-case(string(bpws:getVariableData('digest')))"/>
+                <to variable="writeDRC_copyFile_InputVariable" part="request" query="/ns12:copyFileRequest/ns12:messageDigest"/>
+              </copy>
+            </assign>
+            <invoke name="writeDRC" inputVariable="writeDRC_copyFile_InputVariable" outputVariable="writeDRC_copyFile_OutputVariable" partnerLink="GE02-FileUtility" portType="ns2:GE02-FileUtility" operation="copyFile" id="BpInv10"/>
+            <switch name="Switch_2" id="BpSwt5">
+              <case condition="contains(string(bpws:getVariableData('writeDRC_copyFile_OutputVariable','reply','/ns12:copyFileReply/ns12:status')),'ERROR')">
+                <throw name="ERROR" faultName="bpws:selectionFailure" id="BpThw5"/>
+              </case>
+              <otherwise>
+                <assign name="add_success_response" id="BpAss23">
+                  <copy>
+                    <from expression="concat(string(bpws:getVariableData('outputVariable','payload','/ns6:wsReply/ns6:description')),' DRC_PATH=',string(bpws:getVariableData('drc_getLogicalDirectory_OutputVariable','reply','/ns11:getLogicalDirectoryReply/ns11:logicalDirectory/ns11:physicalPath')))"/>
+                    <to variable="outputVariable" part="payload" query="/ns6:wsReply/ns6:description"/>
+                  </copy>
+                </assign>
+              </otherwise>
+            </switch>
+          </sequence>
+          <sequence name="writeWhat-If" id="BpSeq18">
+            <assign name="a_writeWhat-If" id="BpAss24">
+              <copy>
+                <from variable="dir_local"/>
+                <to variable="writeWhat-If_copyFile_InputVariable" part="request" query="/ns12:copyFileRequest/ns12:sourceDirectory"/>
+              </copy>
+              <copy>
+                <from variable="dir_what-if"/>
+                <to variable="writeWhat-If_copyFile_InputVariable" part="request" query="/ns12:copyFileRequest/ns12:targetDirectory"/>
+              </copy>
+              <copy>
+                <from variable="filename"/>
+                <to variable="writeWhat-If_copyFile_InputVariable" part="request" query="/ns12:copyFileRequest/ns12:fileName"/>
+              </copy>
+              <copy>
+                <from expression="xpath20:lower-case(string(bpws:getVariableData('digest')))"/>
+                <to variable="writeWhat-If_copyFile_InputVariable" part="request" query="/ns12:copyFileRequest/ns12:messageDigest"/>
+              </copy>
+            </assign>
+            <invoke name="writeWhat-If" inputVariable="writeWhat-If_copyFile_InputVariable" outputVariable="writeWhat-If_copyFile_OutputVariable" partnerLink="GE02-FileUtility" portType="ns2:GE02-FileUtility" operation="copyFile" id="BpInv11"/>
+            <switch name="Switch_3" id="BpSwt6">
+              <case condition="contains(string(bpws:getVariableData('writeWhat-If_copyFile_OutputVariable','reply','/ns12:copyFileReply/ns12:status')),'ERROR')">
+                <throw name="ERROR" faultName="bpws:selectionFailure" id="BpThw6"/>
+              </case>
+              <otherwise>
+                <assign name="add_success_reponse" id="BpAss25">
+                  <copy>
+                    <from expression="concat(string(bpws:getVariableData('outputVariable','payload','/ns6:wsReply/ns6:description')),' What-If_PATH=',string(bpws:getVariableData('what-if_getLogicalDirectory_OutputVariable','reply','/ns11:getLogicalDirectoryReply/ns11:logicalDirectory/ns11:physicalPath')))"/>
+                    <to variable="outputVariable" part="payload" query="/ns6:wsReply/ns6:description"/>
+                  </copy>
+                </assign>
+              </otherwise>
+            </switch>
+          </sequence>
+          <sequence name="SKD" id="BpSeq19">
+            <assign name="t_SKD" id="BpAss26">
+              <bpelx:annotation>
+                <bpelx:pattern>transformation</bpelx:pattern>
+              </bpelx:annotation>
+              <copy>
+                <from expression="ora:processXSLT('xsl/Transformation_SKD.xsl',bpws:getVariableData('inputVariable','payload'))"/>
+                <to variable="i_SKD_Produce_Message_InputVariable" part="body"/>
+              </copy>
+            </assign>
+            <invoke name="i_SKD" inputVariable="i_SKD_Produce_Message_InputVariable" partnerLink="MemberUpdate" portType="ns14:Produce_Message_ptt" operation="Produce_Message" id="BpInv12"/>
+          </sequence>
+        </sequence>
+        <sequence name="logOutboundRelation" id="BpSeq20">
+          <sequence name="logOutbound" id="BpSeq21">
+            <assign name="a_logOutbound" id="BpAss27">
+              <copy>
+                <from expression="xpath20:current-dateTime()"/>
+                <to variable="logOutbound_sendOutboundMonitor_InputVariable" part="request" query="/ns9:outboundMonitorRequest/ns9:outboundMonitor/ns9:ReceiveDate"/>
+              </copy>
+              <copy>
+                <from expression="substring-before(string(bpws:getVariableData('filename')),'.xml')"/>
+                <to variable="logOutbound_sendOutboundMonitor_InputVariable" part="request" query="/ns9:outboundMonitorRequest/ns9:outboundMonitor/ns9:Filename"/>
+              </copy>
+              <copy>
+                <from expression="ora:countNodes('inputVariable','payload','/ns10:MemberUpdate/ns10:body/ns10:riskPointDomain/ns10:record')"/>
+                <to variable="logOutbound_sendOutboundMonitor_InputVariable" part="request" query="/ns9:outboundMonitorRequest/ns9:outboundMonitor/ns9:rowCount"/>
+              </copy>
+              <copy>
+                <from expression="'SUCCESS'"/>
+                <to variable="logOutbound_sendOutboundMonitor_InputVariable" part="request" query="/ns9:outboundMonitorRequest/ns9:outboundMonitor/ns9:status"/>
+              </copy>
+              <copy>
+                <from expression="'Sukses mengirim message Member Update.'"/>
+                <to variable="logOutbound_sendOutboundMonitor_InputVariable" part="request" query="/ns9:outboundMonitorRequest/ns9:outboundMonitor/ns9:description"/>
+              </copy>
+            </assign>
+            <invoke name="logOutbound" inputVariable="logOutbound_sendOutboundMonitor_InputVariable" outputVariable="logOutbound_sendOutboundMonitor_OutputVariable" partnerLink="GE01-MessageMonitor" portType="ns1:messageMonitor" operation="sendOutboundMonitor" id="BpInv13"/>
+          </sequence>
+          <sequence name="logRelation" id="BpSeq22">
+            <assign name="a_logRelation" id="BpAss28">
+              <copy>
+                <from variable="logOutbound_sendOutboundMonitor_OutputVariable" part="reply" query="/ns9:replyWS/ns9:lastId"/>
+                <to variable="logRelation_sendRelationMonitor_InputVariable" part="request" query="/ns9:relationMonitorRequest/ns9:relationMonitor/ns9:outboundID"/>
+              </copy>
+              <copy>
+                <from variable="logInbound_sendInboundMonitor_OutputVariable" part="reply" query="/ns9:replyWS/ns9:lastId"/>
+                <to variable="logRelation_sendRelationMonitor_InputVariable" part="request" query="/ns9:relationMonitorRequest/ns9:relationMonitor/ns9:inbounds/ns9:inboundID"/>
+              </copy>
+            </assign>
+            <invoke name="logRelation" inputVariable="logRelation_sendRelationMonitor_InputVariable" outputVariable="logRelation_sendRelationMonitor_OutputVariable" partnerLink="GE01-MessageMonitor" portType="ns1:messageMonitor" operation="sendRelationMonitor" id="BpInv14"/>
+          </sequence>
+        </sequence>
+      </sequence>
+    </scope>
+    <assign name="assignDateZ" id="BpAss29">
+      <copy>
+        <from expression="concat(xpath20:format-dateTime(xpath20:current-dateTime(),'[Y0001]-[M01]-[D01]T[H01]:[m01]:[s01]'),'Z')"/>
+        <to variable="outputVariable" part="payload" query="/ns6:wsReply/ns6:receiveDateTime"/>
+      </copy>
+      <copy>
+        <from expression="concat(string(bpws:getVariableData('outputVariable','payload','/ns6:wsReply/ns6:description')),' InstanceID=',string(ora:getCompositeInstanceId()))"/>
+        <to variable="outputVariable" part="payload" query="/ns6:wsReply/ns6:description"/>
+      </copy>
+    </assign>
+    <reply name="replyOutput" partnerLink="memberupdatebpel_client" portType="client:MemberUpdateBPEL" operation="process" variable="outputVariable" id="BpRpl1"/>
+  </sequence>
+</process><!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Tue Mar 23 15:56:53 ICT 2010
+  Author:  medisagn64
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->

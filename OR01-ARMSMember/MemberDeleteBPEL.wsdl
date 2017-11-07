@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="MemberDeleteBPEL" targetNamespace="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberDeleteBPEL" xmlns:ns2="http://kpei.co.id/MDwsReply.xsd" xmlns:ns1="http://www.kpei.co.id/middleware" xmlns:ns4="http://schemas.oracle.com/bpel/extension" xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:ns3="http://www.kpei.co.id/razor/Member_EOD" xmlns:client="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberDeleteBPEL" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+   <plnk:partnerLinkType name="MemberDeleteBPEL">
+      <plnk:role name="MemberDeleteBPELProvider">
+         <plnk:portType name="client:MemberDeleteBPEL"/>
+      </plnk:role>
+   </plnk:partnerLinkType>
+   <wsdl:import namespace="http://schemas.oracle.com/bpel/extension" location="RuntimeFault.wsdl"/>
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://www.kpei.co.id/middleware" schemaLocation="xsd/ARMSMember-request.xsd"/>
+      </schema>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://kpei.co.id/MDwsReply.xsd" schemaLocation="xsd/MDwsReply.xsd"/>
+      </schema>
+      <xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+         <xsd:import namespace="http://www.kpei.co.id/razor/Member_EOD" schemaLocation="xsd/Member_EOD.xsd"/>
+      </xsd:schema>
+   </wsdl:types>
+   <wsdl:message name="MemberDeleteBPELRequestMessage">
+      <wsdl:part name="payload" element="ns1:MemberDelete"/>
+   </wsdl:message>
+   <wsdl:message name="MemberDeleteBPELResponseMessage">
+      <wsdl:part name="payload" element="ns2:wsReply"/>
+   </wsdl:message>
+   <wsdl:portType name="MemberDeleteBPEL">
+      <wsdl:operation name="process">
+         <wsdl:input message="client:MemberDeleteBPELRequestMessage"/>
+         <wsdl:output message="client:MemberDeleteBPELResponseMessage"/>
+      </wsdl:operation>
+   </wsdl:portType>
+</wsdl:definitions>

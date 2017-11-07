@@ -1,0 +1,178 @@
+<?xml version = "1.0" encoding = "UTF-8" ?>
+<!--
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  Oracle JDeveloper BPEL Designer 
+  
+  Created: Thu Mar 25 16:24:02 ICT 2010
+  Author:  medisagn64
+  Purpose: Synchronous BPEL Process
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+-->
+<process name="MemberToARMSBPEL"
+               targetNamespace="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL"
+               xmlns="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+               xmlns:client="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL"
+               xmlns:ora="http://schemas.oracle.com/xpath/extension"
+               xmlns:bpelx="http://schemas.oracle.com/bpel/extension"
+               xmlns:bpws="http://schemas.xmlsoap.org/ws/2003/03/business-process/"
+         xmlns:ns1="http://xmlns.oracle.com/pcbpel/adapter/db/ARIS-KPEI-PROJECT/OR01-ARMSMember/ARMS_Member"
+         xmlns:ns2="http://xmlns.oracle.com/pcbpel/adapter/db/ARMS-Member"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+         xmlns:xpath20="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.Xpath20"
+         xmlns:oraext="http://www.oracle.com/XSL/Transform/java/oracle.tip.pc.services.functions.ExtFunc"
+         xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
+         xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
+         xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
+         xmlns:ns3="http://www.kpei.co.id/middleware"
+         xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
+         xmlns:mhdr="http://www.oracle.com/XSL/Transform/java/oracle.tip.mediator.service.common.functions.MediatorExtnFunction"
+         xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
+         xmlns:med="http://schemas.oracle.com/mediator/xpath"
+         xmlns:ids="http://xmlns.oracle.com/bpel/services/IdentityService/xpath"
+         xmlns:socket="http://www.oracle.com/XSL/Transform/java/oracle.tip.adapter.socket.ProtocolTranslator"
+         xmlns:ns4="http://kpei.co.id/MDwsReply.xsd"
+         xmlns:ns5="http://xmlns.oracle.com/pcbpel/adapter/db/ARIS-KPEI-PROJECT/OR01-ARMSMember/ARMSMemberDB"
+         xmlns:ns6="http://xmlns.oracle.com/pcbpel/adapter/db/top/ARMSMemberDB">
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      PARTNERLINKS                                                      
+      List of services participating in this BPEL process               
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  --> 
+  <partnerLinks>
+    <!-- 
+      The 'client' role represents the requester of this service. It is 
+      used for callback. The location and correlation information associated
+      with the client role are automatically set using WS-Addressing.
+    -->
+    <partnerLink name="membertoarmsbpel_client" partnerLinkType="client:MemberToARMSBPEL" myRole="MemberToARMSBPELProvider"/>
+    <partnerLink name="ARMSMemberDB" partnerRole="ARMSMemberDB_role"
+                 partnerLinkType="ns5:ARMSMemberDB_plt"/>
+  </partnerLinks>
+
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+      VARIABLES                                                        
+      List of messages and XML documents used within this BPEL process 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <variables>
+    <!-- Reference to the message passed as input during initiation -->
+    <variable name="inputVariable" messageType="client:MemberToARMSBPELRequestMessage"/>
+
+    <!-- Reference to the message that will be returned to the requester-->
+    <variable name="outputVariable" messageType="client:MemberToARMSBPELResponseMessage"/>
+    <variable name="counter" type="xsd:integer"/>
+    <variable name="totaleCLEARSMember" type="xsd:integer"/>
+    <variable name="invalidVar" messageType="bpelx:RuntimeFaultMessage"/>
+    <variable name="Reply_Validation_process_OutputVariable"
+              messageType="client:MemberToARMSBPELResponseMessage"/>
+  </variables>
+  <faultHandlers>
+    <catch faultName="bpelx:invalidVariables" faultVariable="invalidVar">
+      <sequence>
+        <assign name="Assign_1">
+          <copy>
+            <from expression="xpath20:current-dateTime()"/>
+            <to variable="Reply_Validation_process_OutputVariable"
+                part="payload" query="/ns4:wsReply/ns4:receiveDateTime"/>
+          </copy>
+          <copy>
+            <from expression="'ERROR'"/>
+            <to variable="Reply_Validation_process_OutputVariable"
+                part="payload" query="/ns4:wsReply/ns4:status"/>
+          </copy>
+          <copy>
+            <from expression="string(bpws:getVariableData('invalidVar','summary'))"/>
+            <to variable="Reply_Validation_process_OutputVariable"
+                part="payload" query="/ns4:wsReply/ns4:description"/>
+          </copy>
+        </assign>
+        <reply name="Reply_Validation"
+               variable="Reply_Validation_process_OutputVariable"
+               partnerLink="membertoarmsbpel_client"
+               portType="client:MemberToARMSBPEL" operation="process"/>
+      </sequence>
+    </catch>
+  </faultHandlers>
+  <!-- 
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+     ORCHESTRATION LOGIC                                               
+     Set of activities coordinating the flow of messages across the    
+     services integrated within this business process                  
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+  -->
+  <sequence name="main">
+
+    <!-- Receive input from requestor. (Note: This maps to operation defined in MemberToARMSBPEL.wsdl) -->
+    <receive name="receiveInput" partnerLink="membertoarmsbpel_client" portType="client:MemberToARMSBPEL" operation="process" variable="inputVariable" createInstance="yes"/>
+
+    <!-- Generate reply to synchronous request -->
+    <bpelx:validate name="inputValidation" variables="inputVariable"/>
+    <scope name="processing">
+      <variables>
+        <variable name="msg_member" element="ns2:ARMS-MemberInput"/>
+        <variable name="msg_eCLEARSMember" element="ns3:e-CLEARSMember"/>
+        <variable name="MemberInsert_merge_InputVariable"
+                  messageType="ns5:MemberCollection_msg"/>
+      </variables>
+      <faultHandlers>
+        <catchAll>
+          <assign name="assignError">
+            <copy>
+              <from expression="xpath20:current-dateTime()"/>
+              <to variable="outputVariable" part="payload"
+                  query="/ns4:wsReply/ns4:receiveDateTime"/>
+            </copy>
+            <copy>
+              <from expression="'ERROR'"/>
+              <to variable="outputVariable" part="payload"
+                  query="/ns4:wsReply/ns4:status"/>
+            </copy>
+            <copy>
+              <from expression="concat('MemberToARMS BPEL ERROR melakukan insert. ERROR:',ora:getFaultAsString())"/>
+              <to variable="outputVariable" part="payload"
+                  query="/ns4:wsReply/ns4:description"/>
+            </copy>
+          </assign>
+        </catchAll>
+      </faultHandlers>
+      <sequence>
+        <assign name="transform_memberInsert">
+          <bpelx:annotation>
+            <bpelx:pattern>transformation</bpelx:pattern>
+          </bpelx:annotation>
+          <copy>
+            <from expression="ora:processXSLT('xsl/transform_memberInsert.xsl',bpws:getVariableData('inputVariable','payload'))"/>
+            <to variable="MemberInsert_merge_InputVariable"
+                part="MemberCollection"/>
+          </copy>
+        </assign>
+        <invoke name="MemberInsert"
+                inputVariable="MemberInsert_merge_InputVariable"
+                portType="ns5:ARMSMemberDB_ptt" partnerLink="ARMSMemberDB"
+                operation="merge"/>
+        <assign name="AssignSukses">
+          <copy>
+            <from expression="xpath20:current-dateTime()"/>
+            <to variable="outputVariable" part="payload"
+                query="/ns4:wsReply/ns4:receiveDateTime"/>
+          </copy>
+          <copy>
+            <from expression="'SUCCESS'"/>
+            <to variable="outputVariable" part="payload"
+                query="/ns4:wsReply/ns4:status"/>
+          </copy>
+          <copy>
+            <from expression="'MemberToARMS BPEL Sukses melakukan insert.'"/>
+            <to variable="outputVariable" part="payload"
+                query="/ns4:wsReply/ns4:description"/>
+          </copy>
+        </assign>
+      </sequence>
+    </scope>
+    <reply name="replyOutput" partnerLink="membertoarmsbpel_client" portType="client:MemberToARMSBPEL" operation="process" variable="outputVariable"/>
+  </sequence>
+</process>

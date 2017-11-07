@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.kpei.co.id/schema/MemberUpdate" xmlns:ns1="http://www.kpei.co.id/schema/Header" xmlns:ns2="http://www.kpei.co.id/schema/Extension" targetNamespace="http://www.kpei.co.id/schema/MemberUpdate" elementFormDefault="qualified" attributeFormDefault="unqualified">
+   <xsd:import namespace="http://www.kpei.co.id/schema/Header" schemaLocation="Header.xsd"/>
+   <xsd:import namespace="http://www.kpei.co.id/schema/Extension" schemaLocation="Extension.xsd"/>
+   <xsd:element name="MemberUpdate">
+      <xsd:annotation>
+         <xsd:documentation>Comment describing your root element</xsd:documentation>
+      </xsd:annotation>
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="header" type="ns1:Header"/>
+            <xsd:element name="body" type="MemberUpdateCollections"/>
+            <xsd:element name="ext" type="ns2:Extension" minOccurs="0"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:complexType name="MemberUpdateCollections">
+      <xsd:sequence>
+         <xsd:element name="memberUpdateItem" type="MemberUpdateItem" maxOccurs="unbounded"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   <xsd:complexType name="MemberUpdateItem">
+      <xsd:sequence>
+         <xsd:element name="firmId" type="xsd:string"/>
+         <xsd:element name="status" type="xsd:string"/>
+      </xsd:sequence>
+   </xsd:complexType>
+</xsd:schema>

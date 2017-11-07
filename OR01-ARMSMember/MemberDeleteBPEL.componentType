@@ -1,0 +1,21 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+   <service name="memberdeletebpel_client" ui:wsdlLocation="MemberDeleteBPEL.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberDeleteBPEL#wsdl.interface(MemberDeleteBPEL)"/>
+   </service>
+   <reference name="GE01-MessageMonitor" ui:wsdlLocation="messageMonitorServiceRef.wsdl">
+      <interface.wsdl interface="http://oracle.com/sca/soapservice/KPEI-MIDDLEWARE/Ge01-messageMonitor/messageMonitorService#wsdl.interface(messageMonitor)"/>
+   </reference>
+   <reference name="GE02-FileUtility" ui:wsdlLocation="GE02-FileUtility.wsdl">
+      <interface.wsdl interface="http://www.kpei.co.id/GE02-FileUtility#wsdl.interface(GE02-FileUtility)"/>
+   </reference>
+   <reference name="GE03-XMLUtility" ui:wsdlLocation="GE03-XMLUtilityRef.wsdl">
+      <interface.wsdl interface="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility#wsdl.interface(GE03-XMLUtility)"/>
+   </reference>
+   <reference name="writeLocal" ui:wsdlLocation="writeLocal.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/file/ARIS-KPEI-PROJECT/OR01-ARMSMember/writeLocal#wsdl.interface(Write_local_ptt)"/>
+   </reference>
+   <reference name="MemberUpdate" ui:wsdlLocation="MemberUpdate.wsdl">
+      <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/MemberUpdate#wsdl.interface(Produce_Message_ptt)"/>
+   </reference>
+</componentType>

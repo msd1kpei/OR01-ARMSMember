@@ -1,0 +1,133 @@
+<?xml version='1.0' encoding='utf-8'?>
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.kpei.co.id/razor/RefData_Intraday_Delete" xmlns="http://www.kpei.co.id/razor/RefData_Intraday_Delete" elementFormDefault="qualified">
+   <xsd:element name="kpeiInbound">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="header" type="kpeiHeader"/>
+            <xsd:element name="body">
+               <xsd:complexType>
+                  <xsd:sequence>
+                     <xsd:element name="deleteRiskPointDomainRecords">
+                        <xsd:annotation>
+                           <xsd:documentation>deleting risk point domain records</xsd:documentation>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                           <xsd:sequence>
+                              <xsd:element ref="riskPointDomain"/>
+                           </xsd:sequence>
+                        </xsd:complexType>
+                     </xsd:element>
+                  </xsd:sequence>
+               </xsd:complexType>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:complexType name="kpeiHeader">
+      <xsd:sequence>
+         <xsd:element name="asAt" type="xsd:dateTime">
+            <xsd:annotation>
+               <xsd:documentation>timestamp of the message</xsd:documentation>
+            </xsd:annotation>
+         </xsd:element>
+         <xsd:element name="sourceSystem">
+            <xsd:annotation>
+               <xsd:documentation>originating system that produced the message</xsd:documentation>
+            </xsd:annotation>
+            <xsd:simpleType>
+               <xsd:restriction base="xsd:string">
+                  <xsd:maxLength value="100"/>
+               </xsd:restriction>
+            </xsd:simpleType>
+         </xsd:element>
+      </xsd:sequence>
+      <xsd:attribute name="id" type="xsd:string" use="required">
+         <xsd:annotation>
+            <xsd:documentation>id of the message</xsd:documentation>
+         </xsd:annotation>
+      </xsd:attribute>
+   </xsd:complexType>
+   <xsd:element name="riskPointDomain">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="record" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>collection of records</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+         <xsd:attribute name="id" use="required" type="xsd:string">
+            <xsd:annotation>
+               <xsd:documentation>identifier of the Risk Point Domain</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="record">
+      <xsd:complexType>
+         <xsd:attribute name="id" type="xsd:string" use="required">
+            <xsd:annotation>
+               <xsd:documentation>identifier of the record</xsd:documentation>
+            </xsd:annotation>
+         </xsd:attribute>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="parents">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="parent"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="parent">
+      <xsd:complexType>
+         <xsd:attribute name="id" use="required">
+            <xsd:simpleType>
+               <xsd:restriction base="xsd:string">
+                  <xsd:enumeration value="KPEI_GRP"/>
+               </xsd:restriction>
+            </xsd:simpleType>
+         </xsd:attribute>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="fields">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element ref="field" maxOccurs="unbounded">
+               <xsd:annotation>
+                  <xsd:documentation>value of the field</xsd:documentation>
+               </xsd:annotation>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="field">
+      <xsd:complexType>
+         <xsd:simpleContent>
+            <xsd:extension base="xsd:string">
+               <xsd:attribute name="id" type="xsd:string" use="required">
+                  <xsd:annotation>
+                     <xsd:documentation>identifier of the field</xsd:documentation>
+                  </xsd:annotation>
+               </xsd:attribute>
+            </xsd:extension>
+         </xsd:simpleContent>
+      </xsd:complexType>
+   </xsd:element>
+   <xsd:element name="body">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="updateRiskPointDomainRecords">
+               <xsd:annotation>
+                  <xsd:documentation>updating risk point domain records</xsd:documentation>
+               </xsd:annotation>
+               <xsd:complexType>
+                  <xsd:sequence>
+                     <xsd:element ref="riskPointDomain"/>
+                  </xsd:sequence>
+               </xsd:complexType>
+            </xsd:element>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+</xsd:schema>

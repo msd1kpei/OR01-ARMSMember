@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/ARMS-Member" xmlns="http://xmlns.oracle.com/pcbpel/adapter/db/ARMS-Member" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:element name="ARMS-MemberInput" type="ARMS-MemberInput"/>
+   <xs:complexType name="ARMS-MemberInput">
+      <xs:sequence>
+         <xs:element name="con_pers_1" type="xs:string" nillable="true"/>
+         <xs:element name="con_pers_2" type="xs:string" nillable="true"/>
+         <xs:element name="code_zip" type="xs:string" nillable="true"/>
+         <xs:element name="code_cou" type="xs:short" nillable="true"/>
+         <xs:element name="code_mem_cat" type="xs:short" nillable="true"/>
+         <xs:element name="code_mrkt_rate" type="xs:short" nillable="true"/>
+         <xs:element name="code_mem_sta" type="xs:short" nillable="true"/>
+         <xs:element name="city_dsc" type="xs:string" nillable="true"/>
+         <xs:element name="dsc_mem" type="xs:string" nillable="true"/>
+         <xs:element name="dsc_mem_short" type="xs:string" nillable="true"/>
+         <xs:element name="ext_ref" type="xs:string" nillable="true"/>
+         <xs:element name="id_mem" type="xs:string" nillable="true"/>
+         <xs:element name="id_mem_capco" type="xs:string" nillable="true"/>
+         <xs:element name="id_mem_inte" type="xs:string" nillable="true"/>
+         <xs:element name="lst_upd_ts" type="xs:string" nillable="true"/>
+         <xs:element name="mem_adr_1" type="xs:string" nillable="true"/>
+         <xs:element name="mem_adr_2" type="xs:string" nillable="true"/>
+         <xs:element name="type_mem" type="xs:short" nillable="true"/>
+         <xs:element name="mem_cle_id_mem_capco" type="xs:string" nillable="true"/>
+         <xs:element name="tax_num" type="xs:string" nillable="true"/>
+         <xs:element name="fax_nbr" type="xs:string" nillable="true"/>
+         <xs:element name="phone_nbr" type="xs:string" nillable="true"/>
+         <xs:element name="web_nm" type="xs:string" nillable="true"/>
+         <xs:element name="email_adr" type="xs:string" nillable="true"/>
+         <xs:element name="code_br" type="xs:string" nillable="true"/>
+         <xs:element name="parent_id" type="xs:string" nillable="true"/>
+         <xs:element name="uplift_factor" type="xs:decimal" nillable="true"/>
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>

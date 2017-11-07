@@ -1,0 +1,48 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<kpeiInbound xmlns="http://www.kpei.co.id/razor/Member_EOD" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.kpei.co.id/razor/Member_EOD file:/C:/WORK/DEVELOPMENT/ARIS-KPEI-PROJECT/OR01-ARMSMember/xsd/Member_EOD.xsd">
+   <header id="id1">
+      <asAt>2010-08-20T10:17:03.159</asAt>
+      <sourceSystem>source2</sourceSystem>
+   </header>
+   <body>
+      <content>
+         <riskPointDomains>
+            <riskPointDomain id="Value27">
+               <record id="id4">
+                  <parents>
+                     <parent id=""/>
+                  </parents>
+                  <fields>
+                     <field id="">string5</field>
+                     <field id="">string6</field>
+                     <field id="">string7</field>
+                     <field id="">string8</field>
+                  </fields>
+               </record>
+               <record id="id4">
+                  <parents>
+                     <parent id=""/>
+                  </parents>
+                  <fields>
+                     <field id="">string10</field>
+                     <field id="">string11</field>
+                     <field id="">string12</field>
+                     <field id="">string13</field>
+                  </fields>
+               </record>
+               <record id="id4">
+                  <parents>
+                     <parent id=""/>
+                  </parents>
+                  <fields>
+                     <field id="">string15</field>
+                     <field id="">string16</field>
+                     <field id="">string17</field>
+                     <field id="">string18</field>
+                  </fields>
+               </record>
+            </riskPointDomain>
+         </riskPointDomains>
+      </content>
+   </body>
+</kpeiInbound>

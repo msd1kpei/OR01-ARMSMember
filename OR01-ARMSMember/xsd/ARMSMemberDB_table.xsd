@@ -1,0 +1,41 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<xs:schema targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/db/top/ARMSMemberDB" xmlns="http://xmlns.oracle.com/pcbpel/adapter/db/top/ARMSMemberDB" elementFormDefault="qualified" attributeFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+   <xs:element name="MemberCollection" type="MemberCollection"/>
+   <xs:complexType name="MemberCollection">
+      <xs:sequence>
+         <xs:element name="Member" type="Member" minOccurs="0" maxOccurs="unbounded"/>
+      </xs:sequence>
+   </xs:complexType>
+   <xs:complexType name="Member">
+      <xs:sequence>
+         <xs:element name="conPers1" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="conPers2" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="codeZip" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="codeCou" type="xs:long" minOccurs="0" nillable="true"/>
+         <xs:element name="codeMemCat" type="xs:long" minOccurs="0" nillable="true"/>
+         <xs:element name="codeMrktRate" type="xs:long" minOccurs="0" nillable="true"/>
+         <xs:element name="codeMemSta" type="xs:long" minOccurs="0" nillable="true"/>
+         <xs:element name="cityDsc" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="dscMem" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="dscMemShort" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="extRef" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="idMem" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="idMemCapco" type="xs:string" nillable="true"/>
+         <xs:element name="idMemInte" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="lstUpdTs" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="memAdr1" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="memAdr2" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="typMem" type="xs:long" minOccurs="0" nillable="true"/>
+         <xs:element name="memCleIdMemCapco" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="taxNum" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="faxNbr" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="phoneNbr" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="webNm" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="emailAdr" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="codeBr" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="parentId" type="xs:string" minOccurs="0" nillable="true"/>
+         <xs:element name="upliftFactor" type="xs:decimal" minOccurs="0" nillable="true"/>
+         <xs:element name="insertUser" type="xs:string" minOccurs="0" nillable="true"/>
+      </xs:sequence>
+   </xs:complexType>
+</xs:schema>
