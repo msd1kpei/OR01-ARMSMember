@@ -5,5 +5,5 @@
          <plnk:portType name="tns:messageMonitor"/>
       </plnk:role>
    </plnk:partnerLinkType>
-   <wsdl:import namespace="http://oracle.com/sca/soapservice/KPEI-MIDDLEWARE/Ge01-messageMonitor/messageMonitorService" location="http://SERVICESERVER:7777/soa-infra/services/default/GE01-MessageMonitor/messageMonitorService.wsdl"/>
+   <wsdl:import namespace="http://oracle.com/sca/soapservice/KPEI-MIDDLEWARE/Ge01-messageMonitor/messageMonitorService" location="http://SERVICESERVER:8001/soa-infra/services/default/GE01-MessageMonitor/messageMonitorService.wsdl"/>
 </wsdl:definitions>

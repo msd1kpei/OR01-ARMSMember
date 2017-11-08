@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions name="PrepareMemberAck" targetNamespace="http://xmlns.oracle.com/ARIS_KPEI_PROJECT/OR01_ARMSMember/PrepareMemberAck" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:client="http://xmlns.oracle.com/ARIS_KPEI_PROJECT/OR01_ARMSMember/PrepareMemberAck" xmlns:ns1="http://www.kpei.co.id/schema/Member.001" xmlns:ns2="http://www.kpei.co.id/ResponseMessage" xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/">
+   <wsdl:types>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://www.kpei.co.id/schema/Member.001" schemaLocation="xsd/ARMSMember-request.xsd"/>
+      </schema>
+      <schema xmlns="http://www.w3.org/2001/XMLSchema">
+         <import namespace="http://www.kpei.co.id/ResponseMessage" schemaLocation="xsd/ResponseMessage.xsd"/>
+      </schema>
+   </wsdl:types>
+   <wsdl:message name="PrepareMemberAckRequestMessage">
+      <wsdl:part name="payload" element="ns1:MemberToARMS"/>
+   </wsdl:message>
+   <wsdl:message name="PrepareMemberAckResponseMessage">
+      <wsdl:part name="payload" element="ns2:ResponseMessage"/>
+   </wsdl:message>
+   <wsdl:portType name="PrepareMemberAck">
+      <wsdl:operation name="process">
+         <wsdl:input message="client:PrepareMemberAckRequestMessage"/>
+         <wsdl:output message="client:PrepareMemberAckResponseMessage"/>
+      </wsdl:operation>
+   </wsdl:portType>
+   <plnk:partnerLinkType name="PrepareMemberAck">
+      <plnk:role name="PrepareMemberAckProvider">
+         <plnk:portType name="client:PrepareMemberAck"/>
+      </plnk:role>
+   </plnk:partnerLinkType>
+</wsdl:definitions>

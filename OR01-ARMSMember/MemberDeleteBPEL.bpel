@@ -27,7 +27,7 @@
          xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
          xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
          xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
-         xmlns:ns9="http://www.kpei.co.id/middleware"
+         xmlns:ns9="http://www.kpei.co.id/schema/Member.001"
          xmlns:ns10="http://www.kpei.co.id/kpei/messageMonitor"
          xmlns:ns11="http://www.kpei.co.id/GE03-XMLUtility/types"
          xmlns:ns12="http://www.kpei.co.id/razor/Member_EOD"
@@ -57,8 +57,6 @@
       with the client role are automatically set using WS-Addressing.
     -->
     <partnerLink name="memberdeletebpel_client" partnerLinkType="client:MemberDeleteBPEL" myRole="MemberDeleteBPELProvider"/>
-    <partnerLink name="GE01-MessageMonitor" partnerRole="messageMonitor"
-                 partnerLinkType="ns1:GE01-MessageMonitor"/>
     <partnerLink name="GE02-FileUtility" partnerRole="GE02-FileUtility"
                  partnerLinkType="ns2:GE02-FileUtility"/>
     <partnerLink name="GE03-XMLUtility" partnerRole="GE03-XMLUtility"
@@ -232,46 +230,6 @@
         </catchAll>
       </faultHandlers>
       <sequence name="proc">
-        <sequence name="log_inbound">
-          <assign name="a_inbound">
-            <copy>
-              <from expression="ora:countNodes('inputVariable','payload','/ns10:MemberDelete/ns10:body/ns10:idMember')"/>
-              <to variable="inbound_sendInboundMonitor_InputVariable"
-                  part="request"
-                  query="/ns10:inboundMonitorRequest/ns10:inboundMonitor/ns10:rowCount"/>
-            </copy>
-            <copy>
-              <from expression="concat('messsageName=OR01-ARMSMember|CompositeInstanceId=',ora:getCompositeInstanceId(),'|ComponentName=',ora:getComponentName(),'|','Description=Message Member telah berhasil diproses.')"/>
-              <to variable="inbound_sendInboundMonitor_InputVariable"
-                  part="request"
-                  query="/ns10:inboundMonitorRequest/ns10:inboundMonitor/ns10:description"/>
-            </copy>
-            <copy>
-              <from expression="'SUCCESS'"/>
-              <to variable="inbound_sendInboundMonitor_InputVariable"
-                  part="request"
-                  query="/ns10:inboundMonitorRequest/ns10:inboundMonitor/ns10:status"/>
-            </copy>
-            <copy>
-              <from variable="inputVariable" part="payload"
-                    query="/ns9:MemberDelete/ns9:header/@id"/>
-              <to variable="inbound_sendInboundMonitor_InputVariable"
-                  part="request"
-                  query="/ns10:inboundMonitorRequest/ns10:inboundMonitor/ns10:Filename"/>
-            </copy>
-            <copy>
-              <from expression="xpath20:current-dateTime()"/>
-              <to variable="inbound_sendInboundMonitor_InputVariable"
-                  part="request"
-                  query="/ns10:inboundMonitorRequest/ns10:inboundMonitor/ns10:ReceiveDate"/>
-            </copy>
-          </assign>
-          <invoke name="inbound"
-                  inputVariable="inbound_sendInboundMonitor_InputVariable"
-                  outputVariable="inbound_sendInboundMonitor_OutputVariable"
-                  partnerLink="GE01-MessageMonitor"
-                  portType="ns1:messageMonitor" operation="sendInboundMonitor"/>
-        </sequence>
         <sequence name="getReference">
           <assign name="a_reference">
             <copy>
@@ -554,72 +512,6 @@
                   partnerLink="MemberUpdate"
                   portType="ns5:Produce_Message_ptt"
                   operation="Produce_Message"/>
-        </sequence>
-        <sequence name="log_outbound_relation">
-          <sequence name="log_outbound">
-            <assign name="a_logOutbound">
-              <copy>
-                <from expression="ora:countNodes('temp_msg','/ns13:kpeiInbound/body/deleteRiskPointDomainRecords/ns13:riskPointDomain/ns13:record')"/>
-                <to variable="logOutbound_sendOutboundMonitor_InputVariable"
-                    part="request"
-                    query="/ns10:outboundMonitorRequest/ns10:outboundMonitor/ns10:rowCount"/>
-              </copy>
-              <copy>
-                <from expression="xpath20:current-dateTime()"/>
-                <to variable="logOutbound_sendOutboundMonitor_InputVariable"
-                    part="request"
-                    query="/ns10:outboundMonitorRequest/ns10:outboundMonitor/ns10:ReceiveDate"/>
-              </copy>
-              <copy>
-                <from expression="substring-before(string(bpws:getVariableData('filename')),'.xml')"/>
-                <to variable="logOutbound_sendOutboundMonitor_InputVariable"
-                    part="request"
-                    query="/ns10:outboundMonitorRequest/ns10:outboundMonitor/ns10:Filename"/>
-              </copy>
-              <copy>
-                <from expression="'SUCCESS'"/>
-                <to variable="logOutbound_sendOutboundMonitor_InputVariable"
-                    part="request"
-                    query="/ns10:outboundMonitorRequest/ns10:outboundMonitor/ns10:status"/>
-              </copy>
-              <copy>
-                <from expression="'Sukses melakukan proses proses MemberDelete'"/>
-                <to variable="logOutbound_sendOutboundMonitor_InputVariable"
-                    part="request"
-                    query="/ns10:outboundMonitorRequest/ns10:outboundMonitor/ns10:description"/>
-              </copy>
-            </assign>
-            <invoke name="logOutbound"
-                    inputVariable="logOutbound_sendOutboundMonitor_InputVariable"
-                    outputVariable="logOutbound_sendOutboundMonitor_OutputVariable"
-                    partnerLink="GE01-MessageMonitor"
-                    portType="ns1:messageMonitor"
-                    operation="sendOutboundMonitor"/>
-          </sequence>
-          <sequence name="log_relation">
-            <assign name="a_logRelation">
-              <copy>
-                <from variable="logOutbound_sendOutboundMonitor_OutputVariable"
-                      part="reply" query="/ns10:replyWS/ns10:lastId"/>
-                <to variable="logRelation_sendRelationMonitor_InputVariable"
-                    part="request"
-                    query="/ns10:relationMonitorRequest/ns10:relationMonitor/ns10:outboundID"/>
-              </copy>
-              <copy>
-                <from variable="inbound_sendInboundMonitor_OutputVariable"
-                      part="reply" query="/ns10:replyWS/ns10:lastId"/>
-                <to variable="logRelation_sendRelationMonitor_InputVariable"
-                    part="request"
-                    query="/ns10:relationMonitorRequest/ns10:relationMonitor/ns10:inbounds/ns10:inboundID"/>
-              </copy>
-            </assign>
-            <invoke name="logRelation"
-                    inputVariable="logRelation_sendRelationMonitor_InputVariable"
-                    outputVariable="logRelation_sendRelationMonitor_OutputVariable"
-                    partnerLink="GE01-MessageMonitor"
-                    portType="ns1:messageMonitor"
-                    operation="sendRelationMonitor"/>
-          </sequence>
         </sequence>
       </sequence>
     </scope>

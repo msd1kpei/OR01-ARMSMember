@@ -3,9 +3,6 @@
    <service name="memberupdatebpel_client" ui:wsdlLocation="MemberUpdateBPEL.wsdl">
       <interface.wsdl interface="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberUpdateBPEL#wsdl.interface(MemberUpdateBPEL)"/>
    </service>
-   <reference name="GE01-MessageMonitor" ui:wsdlLocation="messageMonitorServiceRef1.wsdl">
-      <interface.wsdl interface="http://oracle.com/sca/soapservice/KPEI-MIDDLEWARE/Ge01-messageMonitor/messageMonitorService#wsdl.interface(messageMonitor)"/>
-   </reference>
    <reference name="GE02-FileUtility" ui:wsdlLocation="GE02-FileUtility1.wsdl">
       <interface.wsdl interface="http://www.kpei.co.id/GE02-FileUtility#wsdl.interface(GE02-FileUtility)"/>
    </reference>

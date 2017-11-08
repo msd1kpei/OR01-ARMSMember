@@ -1,5 +1,14 @@
 <?xml version = '1.0' encoding = 'UTF-8'?>
 <jpr:project xmlns:jpr="http://xmlns.oracle.com/ide/project">
+   <value n="BPELProcess1_Namespace" v="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/BPELProcess1"/>
+   <value n="BPELProcess1_ProcessName" v="BPELProcess1"/>
+   <value n="BPELProcess1_Template" v="BPEL_BASE_ON_WSDL"/>
+   <value n="BPELProcess1_wsdl" v="MemberToARMS_JMS.wsdl"/>
+   <url n="CallMemberToARMSBPEL_bpelFileURL" path="CallMemberToARMSBPEL.bpel"/>
+   <value n="CallMemberToARMSBPEL_Namespace" v="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/CallMemberToARMSBPEL"/>
+   <value n="CallMemberToARMSBPEL_ProcessName" v="CallMemberToARMSBPEL"/>
+   <value n="CallMemberToARMSBPEL_Template" v="BPEL_BASE_ON_WSDL"/>
+   <value n="CallMemberToARMSBPEL_wsdl" v="MemberToARMS_JMS.wsdl"/>
    <hash n="component-versions">
       <value n="oracle.adfdt.controller.adfc.source.migration.AdfControllerSchemaMigrator" v="11.1.1.1.0"/>
       <value n="oracle.adfdt.controller.common.migrator.ProjectMigrator" v="11.1.1.1.0"/>
@@ -43,8 +52,9 @@
       <value n="oracle.modeler.bmmigrate.management.Migration" v="11.1.1.1.0"/>
       <value n="oracle.tip.tools.ide.bpel.v1.designer.addin.migrator.BPELProjectMigrator" v="11.1.1.1.0"/>
       <value n="oracle.tip.tools.ide.fabric.addin.SCAProjectMigrator" v="11.1.1.1.0.06"/>
+      <value n="oracle.tip.tools.ide.pm.addin.migrator.PMProjectMigrator" v="11.1.1.1.0"/>
       <value n="oracle.tip.tools.ide.workflow.addin.TaskFormMigratorAddin" v="11.1.1.1.0"/>
-      <value n="oracle.tip.tools.ide.workflow.addin.WorkflowProjectMigrator" v="11.1.1.1.0.09"/>
+      <value n="oracle.tip.tools.ide.workflow.addin.WorkflowProjectMigrator" v="11.1.1.1.0.08;11.1.1.1.0.09"/>
       <value n="oracle.toplink.workbench.addin.migration.PersistenceProjectMigrator" v="11.1.1.1.1"/>
       <value n="oracle.toplink.workbench.addin.migration.TopLinkProjectMigrator" v="11.1.1.1.0"/>
    </hash>
@@ -57,22 +67,27 @@
       <string v="oracle.bm.commonIde.data.project.ModelerProjectSettings/modelersContentSet"/>
       <string v="oracle.tip.tools.ide.fabric.addin.SCAContentSetProvider/sca-content"/>
       <string v="oracle.adfdtinternal.model.ide.settings.ADFMSettings/adfmContentSet"/>
-      <string v="oracle.bpm.fusion.repository.BPMProjectSettings/bpmProjectsProcessesContentSet"/>
       <string v="oracle.toplink.workbench.addin/toplinkContentSet"/>
+      <string v="oracle.bpm.fusion.repository.BPMProjectSettings/bpmProjectsProcessesContentSet"/>
+      <string v="oracle.bpm.fusion.repository.BPMProjectSettings/bpmProjectsOrganizationContentSet"/>
    </list>
-   <value n="defaultPackage" v="or01armsmember"/>
+   <value n="defaultPackage" v="kpei"/>
    <url n="MemberDeleteBPEL_bpelFileURL" path="MemberDeleteBPEL.bpel"/>
    <value n="MemberDeleteBPEL_Namespace" v="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberDeleteBPEL"/>
    <value n="MemberDeleteBPEL_ProcessName" v="MemberDeleteBPEL"/>
+   <value n="MemberDeleteBPEL_Template" v="BPEL_SYNC_PROCESS"/>
    <value n="MemberDeleteBPEL_wsdl" v="MemberDeleteBPEL.wsdl"/>
    <url n="MemberToARMSBPEL_bpelFileURL" path="MemberToARMSBPEL.bpel"/>
    <value n="MemberToARMSBPEL_Namespace" v="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL"/>
    <value n="MemberToARMSBPEL_ProcessName" v="MemberToARMSBPEL"/>
+   <value n="MemberToARMSBPEL_Template" v="BPEL_SYNC_PROCESS"/>
    <value n="MemberToARMSBPEL_wsdl" v="MemberToARMSBPEL.wsdl"/>
    <url n="MemberUpdateBPEL_bpelFileURL" path="MemberUpdateBPEL.bpel"/>
    <value n="MemberUpdateBPEL_Namespace" v="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberUpdateBPEL"/>
    <value n="MemberUpdateBPEL_ProcessName" v="MemberUpdateBPEL"/>
+   <value n="MemberUpdateBPEL_Template" v="BPEL_SYNC_PROCESS"/>
    <value n="MemberUpdateBPEL_wsdl" v="MemberUpdateBPEL.wsdl"/>
+   <value n="Namespace" v="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL"/>
    <hash n="oracle.ide.model.ResourcePaths">
       <hash n="resourcesContentSet">
          <list n="url-path"/>
@@ -81,6 +96,7 @@
    <hash n="oracle.ide.model.TechnologyScopeConfiguration">
       <list n="technologyScope">
          <string v="SOA"/>
+         <string v="XML"/>
       </list>
    </hash>
    <hash n="oracle.jdeveloper.compiler.OjcConfiguration">
@@ -90,7 +106,6 @@
          <string v=".jpeg"/>
          <string v=".png"/>
          <string v=".properties"/>
-         <string v=".xml"/>
          <string v=".ejx"/>
          <string v=".xcfg"/>
          <string v=".cpx"/>
@@ -103,8 +118,6 @@
          <string v=".xlf"/>
          <string v=".xsl"/>
          <string v=".xsd"/>
-         <string v=".exm"/>
-         <string v=".xml"/>
       </list>
       <value n="internalEncoding" v="Cp1252"/>
       <list n="Javac.commandline.optionlist">
@@ -138,10 +151,6 @@
                      <hash n="filters">
                         <list n="rules">
                            <hash>
-                              <value n="pattern" v="SCA-INF/bpel"/>
-                              <value n="type" v="1"/>
-                           </hash>
-                           <hash>
                               <value n="pattern" v=".migrated/jaxb_classes"/>
                               <value n="type" v="1"/>
                            </hash>
@@ -159,10 +168,6 @@
                            </hash>
                            <hash>
                               <value n="pattern" v=".designer"/>
-                              <value n="type" v="1"/>
-                           </hash>
-                           <hash>
-                              <value n="pattern" v="SCA-INF/file-layer-registry.xml"/>
                               <value n="type" v="1"/>
                            </hash>
                            <hash>
@@ -276,8 +281,8 @@
       </list>
    </hash>
    <hash n="oracle.jdeveloper.model.J2eeSettings">
-      <value n="j2eeWebAppName" v="defaultServicesApp-OR01-ARMSMember-webapp"/>
-      <value n="j2eeWebContextRoot" v="defaultServicesApp-OR01-ARMSMember-context-root"/>
+      <value n="j2eeWebAppName" v="ARIS-KPEI-PROJECT-OR01-ARMSMember-webapp"/>
+      <value n="j2eeWebContextRoot" v="ARIS-KPEI-PROJECT-OR01-ARMSMember-context-root"/>
    </hash>
    <hash n="oracle.jdeveloper.model.PathsConfiguration">
       <hash n="javaContentSet">
@@ -367,4 +372,8 @@
          </list>
       </hash>
    </hash>
+   <url n="PrepareMemberAck_bpelFileURL" path="PrepareMemberAck.bpel"/>
+   <value n="PrepareMemberAck_wsdl" v="PrepareMemberAck.wsdl"/>
+   <value n="ProcessName" v="MemberToARMSBPEL"/>
+   <value n="Template" v="BPEL_SYNC_PROCESS"/>
 </jpr:project>

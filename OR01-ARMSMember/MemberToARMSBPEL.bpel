@@ -24,7 +24,7 @@
          xmlns:dvm="http://www.oracle.com/XSL/Transform/java/oracle.tip.dvm.LookupValue"
          xmlns:xdk="http://schemas.oracle.com/bpel/extension/xpath/function/xdk"
          xmlns:xref="http://www.oracle.com/XSL/Transform/java/oracle.tip.xref.xpath.XRefXPathFunctions"
-         xmlns:ns3="http://www.kpei.co.id/middleware"
+         xmlns:ns3="http://www.kpei.co.id/schema/Member.001"
          xmlns:ldap="http://schemas.oracle.com/xpath/extension/ldap"
          xmlns:mhdr="http://www.oracle.com/XSL/Transform/java/oracle.tip.mediator.service.common.functions.MediatorExtnFunction"
          xmlns:hwf="http://xmlns.oracle.com/bpel/workflow/xpath"
@@ -33,7 +33,9 @@
          xmlns:socket="http://www.oracle.com/XSL/Transform/java/oracle.tip.adapter.socket.ProtocolTranslator"
          xmlns:ns4="http://kpei.co.id/MDwsReply.xsd"
          xmlns:ns5="http://xmlns.oracle.com/pcbpel/adapter/db/ARIS-KPEI-PROJECT/OR01-ARMSMember/ARMSMemberDB"
-         xmlns:ns6="http://xmlns.oracle.com/pcbpel/adapter/db/top/ARMSMemberDB">
+         xmlns:ns6="http://xmlns.oracle.com/pcbpel/adapter/db/top/ARMSMemberDB"
+         xmlns:bpel="http://docs.oasis-open.org/wsbpel/2.0/process/executable"
+         xmlns:bpm="http://xmlns.oracle.com/bpmn20/extensions">
 
   <!-- 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,7 +87,7 @@
                 part="payload" query="/ns4:wsReply/ns4:status"/>
           </copy>
           <copy>
-            <from expression="string(bpws:getVariableData('invalidVar','summary'))"/>
+            <from expression="concat(string(bpws:getVariableData('invalidVar','summary')), ora:getFaultAsString())"/>
             <to variable="Reply_Validation_process_OutputVariable"
                 part="payload" query="/ns4:wsReply/ns4:description"/>
           </copy>
@@ -145,7 +147,7 @@
             <bpelx:pattern>transformation</bpelx:pattern>
           </bpelx:annotation>
           <copy>
-            <from expression="ora:processXSLT('xsl/transform_memberInsert.xsl',bpws:getVariableData('inputVariable','payload'))"/>
+            <from expression="ora:doXSLTransformForDoc('xsl/transform_memberInsert_20161116.xsl', $inputVariable.payload)"/>
             <to variable="MemberInsert_merge_InputVariable"
                 part="MemberCollection"/>
           </copy>

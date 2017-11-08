@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<wsdl:definitions name="MemberDeleteBPEL" targetNamespace="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberDeleteBPEL" xmlns:ns2="http://kpei.co.id/MDwsReply.xsd" xmlns:ns1="http://www.kpei.co.id/middleware" xmlns:ns4="http://schemas.oracle.com/bpel/extension" xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:ns3="http://www.kpei.co.id/razor/Member_EOD" xmlns:client="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberDeleteBPEL" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+<wsdl:definitions name="MemberDeleteBPEL" targetNamespace="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberDeleteBPEL" xmlns:ns2="http://kpei.co.id/MDwsReply.xsd" xmlns:ns1="http://www.kpei.co.id/schema/Member.001" xmlns:ns4="http://schemas.oracle.com/bpel/extension" xmlns:plnk="http://schemas.xmlsoap.org/ws/2003/05/partner-link/" xmlns:ns3="http://www.kpei.co.id/razor/Member_EOD" xmlns:client="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberDeleteBPEL" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
    <plnk:partnerLinkType name="MemberDeleteBPEL">
       <plnk:role name="MemberDeleteBPELProvider">
          <plnk:portType name="client:MemberDeleteBPEL"/>
@@ -8,7 +8,7 @@
    <wsdl:import namespace="http://schemas.oracle.com/bpel/extension" location="RuntimeFault.wsdl"/>
    <wsdl:types>
       <schema xmlns="http://www.w3.org/2001/XMLSchema">
-         <import namespace="http://www.kpei.co.id/middleware" schemaLocation="xsd/ARMSMember-request.xsd"/>
+         <import namespace="http://www.kpei.co.id/schema/Member.001" schemaLocation="xsd/ARMSMember-request.xsd"/>
       </schema>
       <schema xmlns="http://www.w3.org/2001/XMLSchema">
          <import namespace="http://kpei.co.id/MDwsReply.xsd" schemaLocation="xsd/MDwsReply.xsd"/>

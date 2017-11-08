@@ -1,6 +1,6 @@
-Nov 7, 2017 11:52:38 AM oracle.fabric.common.wsdl.SchemaManager isIncrementalBuildSupported
+Nov 16, 2016 10:52:59 AM oracle.fabric.common.wsdl.SchemaManager isIncrementalBuildSupported
 INFO: XMLSchema incremental build enabled.
-Nov 7, 2017 11:52:38 AM com.collaxa.cube.CubeLogger info
+Nov 16, 2016 10:53:00 AM com.collaxa.cube.CubeLogger info
 INFO: validating "MemberToARMSBPEL.bpel" ...
 oracle.jrf.UnknownPlatformException: JRF is unable to determine the current application server platform.
 	at oracle.jrf.ServerPlatformSupportFactory.getInstance(ServerPlatformSupportFactory.java:79)
@@ -24,7 +24,7 @@ oracle.jrf.UnknownPlatformException: JRF is unable to determine the current appl
 	at oracle.soa.scac.ValidateComposite.doValidation(ValidateComposite.java:500)
 	at oracle.soa.scac.ValidateComposite.run(ValidateComposite.java:150)
 	at oracle.soa.scac.ValidateComposite.main(ValidateComposite.java:135)
-Nov 7, 2017 11:52:41 AM com.collaxa.cube.CubeLogger info
+Nov 16, 2016 10:53:06 AM com.collaxa.cube.CubeLogger info
 INFO: validating "MemberDeleteBPEL.bpel" ...
-Nov 7, 2017 11:52:43 AM com.collaxa.cube.CubeLogger info
+Nov 16, 2016 10:53:09 AM com.collaxa.cube.CubeLogger info
 INFO: validating "MemberUpdateBPEL.bpel" ...

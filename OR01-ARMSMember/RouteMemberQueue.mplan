@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<Mediator name="RouteMemberQueue" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.oracle.com/sca/1.0/mediator" wsdlTargetNamespace="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/Inbound_MemberQueue">
+   <operation name="Consume_Message" deliveryPolicy="AllOrNothing" priority="4" validateSchema="false">
+      <switch>
+         <case executionType="direct" name="PrepareMemberAck.preparememberack_client.process">
+            <action>
+               <transform>
+                  <part name="$out.payload" function="xslt(xsl/MemberQ_To_MemberProcess.xsl, $in.body)"/>
+               </transform>
+               <invoke reference="PrepareMemberAck.preparememberack_client" operation="process">
+                  <onReply>
+                     <transform>
+                        <part name="$out.part1" function="xslt(xsl/ResponseMessage_To_ResponseMessage.xsl, $in.payload)"/>
+                     </transform>
+                     <forward reference="ResponseMessageSender" operation="execute"/>
+                  </onReply>
+               </invoke>
+            </action>
+         </case>
+      </switch>
+   </operation>
+</Mediator>

@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<MemberDelete xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.kpei.co.id/middleware file:/C:/WORK/DEVELOPMENT/ARIS-KPEI-PROJECT/OR01-ARMSMember/xsd/ARMSMember-request.xsd" xmlns="http://www.kpei.co.id/middleware">
+<MemberDelete xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.kpei.co.id/schema/Member.001 file:/C:/WORK/DEVELOPMENT/ARIS-KPEI-PROJECT/OR01-ARMSMember/xsd/ARMSMember-request.xsd" xmlns="http://www.kpei.co.id/schema/Member.001">
    <header id="id261">
       <asAt>2010-03-31T12:13:44.073</asAt>
       <source>source262</source>

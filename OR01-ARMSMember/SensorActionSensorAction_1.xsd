@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
-<xsd:schema blockDefault="#all" elementFormDefault="qualified" targetNamespace="http://xmlns.oracle.com/bpel/sensor" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:sensor="http://www.kpei.co.id/middleware" xmlns:nxsd="http://xmlns.oracle.com/pcbpel/nxsd" xmlns:tns="http://xmlns.oracle.com/bpel/sensor" nxsd:encoding="UTF-8">
-   <xsd:import namespace="http://www.kpei.co.id/middleware" schemaLocation="xsd/ARMSMember-request.xsd"/>
+<xsd:schema blockDefault="#all" elementFormDefault="qualified" targetNamespace="http://xmlns.oracle.com/bpel/sensor" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:sensor="http://www.kpei.co.id/schema/Member.001" xmlns:nxsd="http://xmlns.oracle.com/pcbpel/nxsd" xmlns:tns="http://xmlns.oracle.com/bpel/sensor" nxsd:encoding="UTF-8">
+   <xsd:import namespace="http://www.kpei.co.id/schema/Member.001" schemaLocation="xsd/ARMSMember-request.xsd"/>
    <xsd:simpleType name="tSensorActionPublishType">
       <xsd:annotation>
          <xsd:documentation>

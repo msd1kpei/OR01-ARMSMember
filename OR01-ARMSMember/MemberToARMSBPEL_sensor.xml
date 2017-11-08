@@ -1,0 +1,9 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<sensors targetNamespace="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL" xmlns="http://xmlns.oracle.com/bpel/sensor" xmlns:tns="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL" xmlns:pc="http://xmlns.oracle.com/bpel/sensor">
+   <sensor sensorName="1.Initialization" classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="receiveInput">
+      <activityConfig evalTime="activation"/>
+   </sensor>
+   <sensor sensorName="6.Termination" classname="oracle.tip.pc.services.reports.dca.agents.BpelActivitySensorAgent" kind="activity" target="processing">
+      <activityConfig evalTime="completion"/>
+   </sensor>
+</sensors>

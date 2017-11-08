@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<imp1:MemberToARMS xmlns:imp1="http://www.kpei.co.id/middleware">
+<imp1:MemberToARMS xmlns:imp1="http://www.kpei.co.id/schema/Member.001">
    <imp1:header id="id38">
       <imp1:asAt>2011-05-23T16:06:52.731</imp1:asAt>
       <imp1:source>source39</imp1:source>

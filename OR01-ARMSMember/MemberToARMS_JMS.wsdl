@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<wsdl:definitions name="MemberToARMS-JMS" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/MemberToARMS_JMS" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/MemberToARMS_JMS" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:imp1="http://www.kpei.co.id/middleware" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/">
+<wsdl:definitions name="MemberToARMS-JMS" targetNamespace="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/MemberToARMS_JMS" xmlns:tns="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/MemberToARMS_JMS" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:imp1="http://www.kpei.co.id/schema/Member.001" xmlns:plt="http://schemas.xmlsoap.org/ws/2003/05/partner-link/">
    <plt:partnerLinkType name="ConsumeMessageMemberQueue_plt">
       <plt:role name="ConsumeMessageMemberQueue_role">
          <plt:portType name="tns:ConsumeMessageMemberQueue_ptt"/>
@@ -7,7 +7,7 @@
    </plt:partnerLinkType>
    <wsdl:types>
       <schema xmlns="http://www.w3.org/2001/XMLSchema">
-         <import namespace="http://www.kpei.co.id/middleware" schemaLocation="xsd/ARMSMember-request.xsd"/>
+         <import namespace="http://www.kpei.co.id/schema/Member.001" schemaLocation="xsd/ARMSMember-request.xsd"/>
       </schema>
    </wsdl:types>
    <wsdl:message name="ConsumeMessageMemberQueue_msg">
