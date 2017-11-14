@@ -29,13 +29,40 @@
    </service>
    <property name="auditLevel" many="false">Development</property>
    <property name="validateSchema" type="xs:boolean" many="false">false</property>
+   <property name="originalProductVersion" type="xs:string" many="false">11.0.0.0.0</property>
+   <property name="productVersion" type="xs:string" many="false">12.2.1.3.0.170820</property>
+   <property name="compositeID" type="xs:string" many="false">1415bb26-d46e-4f91-a588-4758feafc750</property>
    <component name="ARMSMemberMediator">
       <implementation.mediator src="ARMSMemberMediator.mplan"/>
+      <componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                     xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+         <service name="ARMSMemberMediator" ui:wsdlLocation="OR01_ARMSMember.wsdl">
+            <interface.wsdl interface="http://oracle.com/sca/soapservice/ARIS-KPEI-PROJECT/OR01-ARMSMember/OR01_ARMSMember#wsdl.interface(execute_ptt)"/>
+         </service>
+         <reference name="MemberDeleteBPEL.memberdeletebpel_client" ui:wsdlLocation="MemberDeleteBPEL.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberDeleteBPEL#wsdl.interface(MemberDeleteBPEL)"/>
+         </reference>
+         <reference name="MemberUpdateBPEL.memberupdatebpel_client" ui:wsdlLocation="MemberUpdateBPEL.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberUpdateBPEL#wsdl.interface(MemberUpdateBPEL)"/>
+         </reference>
+         <reference name="MemberToARMSBPEL.membertoarmsbpel_client" ui:wsdlLocation="MemberToARMSBPEL.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL#wsdl.interface(MemberToARMSBPEL)"/>
+         </reference>
+      </componentType>
       <property name="isResequencing" many="false" override="may">false</property>
       <business-events/>
    </component>
    <component name="MemberToARMSBPEL">
       <implementation.bpel src="MemberToARMSBPEL.bpel"/>
+      <componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                     xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+         <service name="membertoarmsbpel_client" ui:wsdlLocation="MemberToARMSBPEL.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL#wsdl.interface(MemberToARMSBPEL)"/>
+         </service>
+         <reference name="ARMSMemberDB" ui:wsdlLocation="ARMSMemberDB.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/db/ARIS-KPEI-PROJECT/OR01-ARMSMember/ARMSMemberDB#wsdl.interface(ARMSMemberDB_ptt)"/>
+         </reference>
+      </componentType>
       <property name="configuration.sensorLocation" type="xs:string" many="false">MemberToARMSBPEL_sensor.xml</property>
       <property name="configuration.monitorLocation" type="xs:string" many="false">MemberToARMSBPEL.monitor</property>
       <property name="configuration.sensorActionLocation" type="xs:string" many="false">MemberToARMSBPEL_sensorAction.xml</property>
@@ -43,6 +70,24 @@
    </component>
    <component name="MemberDeleteBPEL">
       <implementation.bpel src="MemberDeleteBPEL.bpel"/>
+      <componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                     xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+         <service name="memberdeletebpel_client" ui:wsdlLocation="MemberDeleteBPEL.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberDeleteBPEL#wsdl.interface(MemberDeleteBPEL)"/>
+         </service>
+         <reference name="GE02-FileUtility" ui:wsdlLocation="GE02-FileUtility.wsdl">
+            <interface.wsdl interface="http://www.kpei.co.id/GE02-FileUtility#wsdl.interface(GE02-FileUtility)"/>
+         </reference>
+         <reference name="GE03-XMLUtility" ui:wsdlLocation="GE03-XMLUtilityRef.wsdl">
+            <interface.wsdl interface="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility#wsdl.interface(GE03-XMLUtility)"/>
+         </reference>
+         <reference name="writeLocal" ui:wsdlLocation="writeLocal.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/file/ARIS-KPEI-PROJECT/OR01-ARMSMember/writeLocal#wsdl.interface(Write_local_ptt)"/>
+         </reference>
+         <reference name="MemberUpdate" ui:wsdlLocation="MemberUpdate.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/MemberUpdate#wsdl.interface(Produce_Message_ptt)"/>
+         </reference>
+      </componentType>
       <property name="configuration.sensorLocation" type="xs:string" many="false">MemberDeleteBPEL_sensor.xml</property>
       <property name="configuration.monitorLocation" type="xs:string" many="false">MemberDeleteBPEL.monitor</property>
       <property name="configuration.sensorActionLocation" type="xs:string" many="false">MemberDeleteBPEL_sensorAction.xml</property>
@@ -50,6 +95,27 @@
    </component>
    <component name="MemberUpdateBPEL">
       <implementation.bpel src="MemberUpdateBPEL.bpel"/>
+      <componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                     xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+         <service name="memberupdatebpel_client" ui:wsdlLocation="MemberUpdateBPEL.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberUpdateBPEL#wsdl.interface(MemberUpdateBPEL)"/>
+         </service>
+         <reference name="GE02-FileUtility" ui:wsdlLocation="GE02-FileUtility1.wsdl">
+            <interface.wsdl interface="http://www.kpei.co.id/GE02-FileUtility#wsdl.interface(GE02-FileUtility)"/>
+         </reference>
+         <reference name="GE03-XMLUtility" ui:wsdlLocation="GE03-XMLUtilityRef1.wsdl">
+            <interface.wsdl interface="http://oracle.com/sca/soapservice/kpei/GE03-XMLUtility/GE03_XMLUtility#wsdl.interface(GE03-XMLUtility)"/>
+         </reference>
+         <reference name="update-EOD-writeLocal" ui:wsdlLocation="update_EOD_writeLocal.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/file/ARIS-KPEI-PROJECT/OR01-ARMSMember/update_EOD_writeLocal#wsdl.interface(Write_updateEOD_ptt)"/>
+         </reference>
+         <reference name="update-IntraDay-write" ui:wsdlLocation="update_IntraDay_write.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/file/ARIS-KPEI-PROJECT/OR01-ARMSMember/update_IntraDay_write#wsdl.interface(Write_intraday_ptt)"/>
+         </reference>
+         <reference name="MemberUpdate" ui:wsdlLocation="MemberUpdate.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/MemberUpdate#wsdl.interface(Produce_Message_ptt)"/>
+         </reference>
+      </componentType>
       <property name="configuration.sensorLocation" type="xs:string" many="false">MemberUpdateBPEL_sensor.xml</property>
       <property name="configuration.monitorLocation" type="xs:string" many="false">MemberUpdateBPEL.monitor</property>
       <property name="configuration.sensorActionLocation" type="xs:string" many="false">MemberUpdateBPEL_sensorAction.xml</property>
@@ -57,9 +123,30 @@
    </component>
    <component name="RouteMemberQueue">
       <implementation.mediator src="RouteMemberQueue.mplan"/>
+      <componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                     xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+         <service name="RouteMemberQueue" ui:wsdlLocation="Inbound_MemberQueue.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/jms/ARIS-KPEI-PROJECT/OR01-ARMSMember/Inbound_MemberQueue#wsdl.interface(Consume_Message_ptt)"/>
+         </service>
+         <reference name="PrepareMemberAck.preparememberack_client" ui:wsdlLocation="PrepareMemberAck.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/ARIS_KPEI_PROJECT/OR01_ARMSMember/PrepareMemberAck#wsdl.interface(PrepareMemberAck)"/>
+         </reference>
+         <reference name="ResponseMessageSender" ui:wsdlLocation="Outbound.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/MW-OSB/sendResponeMsg/sendResponsemsg#wsdl.interface(sendResponsemsg_ptt)"/>
+         </reference>
+      </componentType>
    </component>
    <component name="PrepareMemberAck" version="1.1">
       <implementation.bpel src="PrepareMemberAck.bpel"/>
+      <componentType xmlns="http://xmlns.oracle.com/sca/1.0" xmlns:xs="http://www.w3.org/2001/XMLSchema"
+                     xmlns:ui="http://xmlns.oracle.com/soa/designer/">
+         <service name="preparememberack_client" ui:wsdlLocation="PrepareMemberAck.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/ARIS_KPEI_PROJECT/OR01_ARMSMember/PrepareMemberAck#wsdl.interface(PrepareMemberAck)"/>
+         </service>
+         <reference name="MemberToARMSBPEL.membertoarmsbpel_client" ui:wsdlLocation="MemberToARMSBPEL.wsdl">
+            <interface.wsdl interface="http://xmlns.oracle.com/ARIS_KPEI_PROJECT_jws/OR01_ARMSMember/MemberToARMSBPEL#wsdl.interface(MemberToARMSBPEL)"/>
+         </reference>
+      </componentType>
    </component>
    <reference name="update-EOD-writeLocal">
       <interface.wsdl interface="http://xmlns.oracle.com/pcbpel/adapter/file/ARIS-KPEI-PROJECT/OR01-ARMSMember/update_EOD_writeLocal#wsdl.interface(Write_updateEOD_ptt)"/>
